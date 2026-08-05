@@ -8,12 +8,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 :root{
---ink:#05100a;--ink2:#080f0b;--sf:#0e1c12;--sf2:#112019;
---e:rgba(255,255,255,.07);--e2:rgba(255,255,255,.04);--e3:rgba(255,255,255,.025);
---ac:#17b36b;--ac2:rgba(23,179,107,.1);--ac3:rgba(23,179,107,.05);
---rd:#e5484d;--am:#e8a020;--bl:#3e9eff;--pu:#a78bfa;
+--ink:#faf6ec;--ink2:#f4efe1;--sf:#ffffff;--sf2:#f5f1e5;
+--e:rgba(60,50,20,.13);--e2:rgba(60,50,20,.08);--e3:rgba(60,50,20,.05);
+--ac:#0e8a50;--ac2:rgba(14,138,80,.1);--ac3:rgba(14,138,80,.05);
+--rd:#c93a40;--am:#a8720d;--bl:#2270c8;--pu:#7a58d8;
 --rdg:rgba(229,72,77,.07);--amg:rgba(232,160,32,.07);--blg:rgba(62,158,255,.06);
---tx:#cee8d8;--tx2:#5e8a6e;--tx3:#2a4236;--tx4:#1a2e22;
+--tx:#22392c;--tx2:#51705f;--tx3:#8a978c;--tx4:#b3ab97;
 --f:'Inter',system-ui,sans-serif;--m:'IBM Plex Mono',monospace;--s:'Fraunces',Georgia,serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -24,7 +24,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
 .sb{width:214px;flex-shrink:0;background:var(--ink2);border-right:1px solid var(--e);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;overflow-y:auto}
 .sb-brand{padding:18px 16px 14px;border-bottom:1px solid var(--e);display:flex;align-items:center;gap:9px}
-.sb-mark{width:26px;height:26px;background:var(--ac);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#021508;flex-shrink:0;box-shadow:0 0 14px rgba(23,179,107,.3)}
+.sb-mark{width:26px;height:26px;background:var(--ac);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#fff;flex-shrink:0;box-shadow:0 0 14px rgba(23,179,107,.3)}
 .sb-name{font-size:12.5px;font-weight:600;letter-spacing:-.01em}
 .sb-tag{font-size:9.5px;color:var(--tx3);font-family:var(--m)}
 .sb-nav{padding:10px 6px;flex:1}
@@ -41,7 +41,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
 .main{margin-left:214px;flex:1;display:flex;flex-direction:column}
-.topbar{height:48px;background:rgba(5,16,10,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--e);display:flex;align-items:center;padding:0 24px;gap:10px;position:sticky;top:0;z-index:90}
+.topbar{height:48px;background:rgba(250,246,236,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--e);display:flex;align-items:center;padding:0 24px;gap:10px;position:sticky;top:0;z-index:90}
 #tb-h{font-size:13px;font-weight:600;color:var(--tx)}
 #tb-q{font-size:11px;color:var(--tx3);font-style:italic}
 .tb-r{margin-left:auto;display:flex;align-items:center;gap:7px}
@@ -54,20 +54,20 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
 .warn-bar{background:rgba(232,160,32,.06);border:1px solid rgba(232,160,32,.18);border-radius:8px;padding:10px 14px;margin-bottom:18px;display:flex;gap:10px}
 .warn-ico{flex-shrink:0;margin-top:1px;font-size:13px}
-.warn-txt{font-size:11.5px;color:#c09050;line-height:1.65}
-.warn-txt strong{color:#e8c080}
+.warn-txt{font-size:11.5px;color:#8a6014;line-height:1.65}
+.warn-txt strong{color:#6d4b0d}
 
-.hero{background:linear-gradient(135deg,var(--sf) 0%,rgba(8,15,11,.5) 100%);border:1px solid var(--e);border-radius:18px;padding:24px 28px;margin-bottom:22px;position:relative;overflow:hidden}
+.hero{background:linear-gradient(135deg,#ffffff 0%,#f4efe1 100%);border:1px solid var(--e);border-radius:18px;padding:24px 28px;margin-bottom:22px;position:relative;overflow:hidden}
 .hero::after{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(23,179,107,.07),transparent 70%);pointer-events:none}
 .hero-ey{font-family:var(--m);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);margin-bottom:6px}
-.hero-h{font-family:var(--s);font-size:23px;font-weight:300;font-style:italic;color:#fff;line-height:1.2;margin-bottom:10px;letter-spacing:-.015em}
-.hero-p{font-size:13px;color:#92b8a2;line-height:1.8;max-width:780px}
-.hero-p strong{color:#cee8d8}
+.hero-h{font-family:var(--s);font-size:23px;font-weight:300;font-style:italic;color:#182a1f;line-height:1.2;margin-bottom:10px;letter-spacing:-.015em}
+.hero-p{font-size:13px;color:#48604f;line-height:1.8;max-width:780px}
+.hero-p strong{color:#182a1f}
 
 .ey{font-family:var(--m);font-size:9.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);margin-bottom:12px}
 
 .mb{display:inline-block;font-family:var(--m);font-size:8px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;border-radius:3px;margin-left:6px;vertical-align:middle}
-.mb-fy{background:rgba(23,179,107,.12);color:#17b36b}
+.mb-fy{background:rgba(23,179,107,.12);color:#0c7a46}
 .mb-sp{background:rgba(62,158,255,.1);color:var(--bl)}
 .mb-rr{background:rgba(232,160,32,.1);color:var(--am)}
 .mb-fc{background:rgba(167,139,250,.1);color:var(--pu)}
@@ -80,9 +80,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .k{background:var(--sf);border:1px solid var(--e);border-radius:12px;padding:15px 17px;position:relative;overflow:hidden;transition:border-color .15s,transform .15s}
 .k:hover{border-color:rgba(23,179,107,.2);transform:translateY(-1px)}
 .k::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;border-radius:12px 12px 0 0;background:var(--ac)}
-.k.r::before{background:var(--rd)}.k.a::before{background:var(--am)}.k.b::before{background:var(--bl)}.k.n::before{background:var(--e3)}
+.k.r::before{background:var(--rd)}.k.a::before{background:var(--am)}.k.b::before{background:var(--bl)}.k.n::before{background:rgba(0,0,0,.2)}
 .k-lbl{font-size:11px;color:var(--tx2);margin-bottom:6px;font-weight:500}
-.k-val{font-family:var(--m);font-size:23px;font-weight:500;color:#fff;letter-spacing:-.03em;line-height:1;margin-bottom:9px}
+.k-val{font-family:var(--m);font-size:23px;font-weight:500;color:#101f16;letter-spacing:-.03em;line-height:1;margin-bottom:9px}
 .k.r .k-val{color:var(--rd)}.k.a .k-val{color:var(--am)}.k.b .k-val{color:var(--bl)}
 
 /* THE 3-REFERENCE HINT BLOCK */
@@ -92,7 +92,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .k-ref-v{font-family:var(--m);color:var(--tx2);font-weight:500;text-align:right}
 
 .k-delta{display:inline-flex;align-items:center;font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px;margin-right:4px;margin-bottom:2px}
-.ku{background:rgba(23,179,107,.1);color:#17b36b}
+.ku{background:rgba(23,179,107,.1);color:#0c7a46}
 .kd{background:rgba(229,72,77,.1);color:var(--rd)}
 .kf{background:var(--e);color:var(--tx3)}
 .k-meth{display:block;font-family:var(--m);font-size:8px;color:var(--tx3);margin-top:6px}
@@ -133,18 +133,18 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .callout{background:var(--sf2);border-left:3px solid var(--ac);border-radius:0 8px 8px 0;padding:12px 14px;margin-bottom:18px;font-size:12.5px;color:var(--tx2);line-height:1.7}
 .callout strong{color:var(--tx)}
 
-.pp-box{background:rgba(62,158,255,.04);border:1px solid rgba(62,158,255,.14);border-radius:8px;padding:12px 14px;margin-bottom:18px;font-size:11.5px;color:#8aaccc;line-height:1.7}
-.pp-box strong{color:#b0ccee}
+.pp-box{background:rgba(62,158,255,.04);border:1px solid rgba(62,158,255,.14);border-radius:8px;padding:12px 14px;margin-bottom:18px;font-size:11.5px;color:#3f5e80;line-height:1.7}
+.pp-box strong{color:#27415c}
 
 .tbl{width:100%;border-collapse:collapse;font-size:12px}
 .tbl thead tr{border-bottom:1px solid var(--e)}
 .tbl th{font-size:9.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--tx3);padding:8px 12px;text-align:left;background:var(--sf2)}
 .tbl td{padding:9px 12px;border-bottom:1px solid var(--e2);color:var(--tx);vertical-align:middle}
 .tbl tr:last-child td{border-bottom:none}
-.tbl tr:hover td{background:rgba(255,255,255,.012)}
+.tbl tr:hover td{background:rgba(0,0,0,.025)}
 .tbl-total{font-weight:600;background:rgba(23,179,107,.04)!important;border-top:1px solid var(--e)!important}
 .mo{font-family:var(--m)}
-.gr{color:#17b36b;font-weight:500}.rd{color:var(--rd);font-weight:500}.am{color:var(--am);font-weight:500}
+.gr{color:#0c7a46;font-weight:500}.rd{color:var(--rd);font-weight:500}.am{color:var(--am);font-weight:500}
 
 .sc{border-radius:12px;padding:17px 20px;border:1px solid}
 .sc-con{background:rgba(229,72,77,.04);border-color:rgba(229,72,77,.2)}
@@ -167,7 +167,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .rec-b{font-size:12px;color:var(--tx2);line-height:1.7;margin-left:29px}
 .rec-tags{margin:8px 0 0 29px;display:flex;flex-wrap:wrap;gap:5px}
 .rt{font-family:var(--m);font-size:9.5px;padding:2px 7px;border-radius:3px}
-.rt-r{background:rgba(229,72,77,.1);color:var(--rd)}.rt-a{background:rgba(232,160,32,.1);color:var(--am)}.rt-g{background:rgba(23,179,107,.1);color:#17b36b}.rt-b{background:rgba(62,158,255,.1);color:var(--bl)}
+.rt-r{background:rgba(229,72,77,.1);color:var(--rd)}.rt-a{background:rgba(232,160,32,.1);color:var(--am)}.rt-g{background:rgba(23,179,107,.1);color:#0c7a46}.rt-b{background:rgba(62,158,255,.1);color:var(--bl)}
 
 footer{border-top:1px solid var(--e);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;max-width:1320px}
 .ft-l{font-family:var(--s);font-style:italic;font-size:13px;color:var(--tx2)}
@@ -422,10 +422,10 @@ footer{border-top:1px solid var(--e);padding:16px 24px;display:flex;justify-cont
       <div class="fv-row"><div class="fv-lbl">Spend</div><div class="fv-track"><div class="fv-bar" style="width:100%;background:linear-gradient(90deg,#0a6e40,#17b36b)">2,301,189 EGP</div></div><div class="fv-num" style="color:var(--tx2)">192K/mo</div></div>
       <div class="fv-conn"><span class="fv-rate" style="background:var(--sf2);color:var(--tx2)">→ Clicks</span></div>
       <div class="fv-row"><div class="fv-lbl">Link Clicks</div><div class="fv-track"><div class="fv-bar" style="width:90%;background:linear-gradient(90deg,#0e8c52,#1dc47a)">432,539</div></div><div class="fv-num" style="color:var(--tx2)">36.0K/mo</div></div>
-      <div class="fv-conn"><span class="fv-rate" style="background:rgba(23,179,107,.12);color:#17b36b">Click→Msg: 4.65%</span></div>
-      <div class="fv-row"><div class="fv-lbl">Messages</div><div class="fv-track"><div class="fv-bar" style="width:52%;background:linear-gradient(90deg,#127a46,#17a860)">20,096</div></div><div class="fv-num" style="color:#17b36b">1,675/mo</div></div>
-      <div class="fv-conn"><span class="fv-rate" style="background:rgba(23,179,107,.12);color:#17b36b">Msg→Meas: 7.06%</span></div>
-      <div class="fv-row"><div class="fv-lbl">Measurements</div><div class="fv-track"><div class="fv-bar" style="width:30%;background:linear-gradient(90deg,#0a5233,#0f7048)">1,419</div></div><div class="fv-num" style="color:#17b36b">118/mo</div></div>
+      <div class="fv-conn"><span class="fv-rate" style="background:rgba(23,179,107,.12);color:#0c7a46">Click→Msg: 4.65%</span></div>
+      <div class="fv-row"><div class="fv-lbl">Messages</div><div class="fv-track"><div class="fv-bar" style="width:52%;background:linear-gradient(90deg,#127a46,#17a860)">20,096</div></div><div class="fv-num" style="color:#0c7a46">1,675/mo</div></div>
+      <div class="fv-conn"><span class="fv-rate" style="background:rgba(23,179,107,.12);color:#0c7a46">Msg→Meas: 7.06%</span></div>
+      <div class="fv-row"><div class="fv-lbl">Measurements</div><div class="fv-track"><div class="fv-bar" style="width:30%;background:linear-gradient(90deg,#0a5233,#0f7048)">1,419</div></div><div class="fv-num" style="color:#0c7a46">118/mo</div></div>
     </div>
     <div style="padding:0 20px 16px;font-family:var(--m);font-size:9.5px;color:var(--tx3)">2026 figures through Jul 29 (measurements through Jul 28) · All click/message counts from the unified Jul-29 export · Same-period 2025 (Jan-Jul28 est.): ~927 meas on ~1,178,813 EGP — actual through Jun 15 (761 / 910,341) extended at FY25 run rate.</div>
   </div>
@@ -1267,10 +1267,10 @@ function nav(id,btn){
   document.getElementById('tb-q').textContent=QS[id]||'';
   window.scrollTo({top:0,behavior:'smooth'});
 }
-var GC='rgba(255,255,255,.05)';
+var GC='rgba(0,0,0,.07)';
 Chart.defaults.font.family="'IBM Plex Mono',monospace";
 Chart.defaults.font.size=10;
-Chart.defaults.color='#5e8a6e';
+Chart.defaults.color='#4a6355';
 Chart.defaults.plugins.legend.labels.usePointStyle=true;
 Chart.defaults.plugins.legend.labels.padding=14;
 function bar(l,d,c){return{label:l,data:d,backgroundColor:c,borderRadius:4,borderSkipped:false}}
@@ -1299,9 +1299,9 @@ new Chart(document.getElementById('ch-hist-year'),{type:'bar',data:{labels:['202
 
 new Chart(document.getElementById('ch-hist-sp'),{type:'bar',data:{labels:['2021','2022','2023','2024','2025 est.','2026'],datasets:[{label:'Jan–Jul Measurements',data:[333,354,452,484,927,673],backgroundColor:['rgba(62,158,255,.35)','rgba(62,158,255,.45)','rgba(62,158,255,.55)','rgba(62,158,255,.65)','rgba(62,158,255,.8)','rgba(229,72,77,.65)'],borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return' Jan–Jul: '+c.parsed.y+' meas.'}}}},scales:{y:{grid:{color:GC}},x:{grid:{display:false}}}}});
 
-new Chart(document.getElementById('ch-hist-season'),{type:'bar',data:{labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],datasets:[{label:'Seasonality Index (2021–24 avg ÷ 64.0)',data:[1.19,0.85,0.95,0.57,0.91,0.96,0.91,0.92,1.02,1.46,1.32,0.95],backgroundColor:[1.19,0.85,0.95,0.57,0.91,0.96,0.91,0.92,1.02,1.46,1.32,0.95].map(function(v){return v>=1.2?'rgba(23,179,107,.75)':v>=1?'rgba(23,179,107,.45)':v>=0.8?'rgba(232,160,32,.45)':'rgba(229,72,77,.55)'}),borderRadius:4,borderSkipped:false},{label:'Average (1.00)',data:[1,1,1,1,1,1,1,1,1,1,1,1],type:'line',borderColor:'rgba(255,255,255,.25)',borderWidth:1.5,borderDash:[4,4],pointRadius:0,tension:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{label:function(c){return' Index: '+c.parsed.y}}}},scales:{y:{grid:{color:GC},min:0},x:{grid:{display:false}}}}});
+new Chart(document.getElementById('ch-hist-season'),{type:'bar',data:{labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],datasets:[{label:'Seasonality Index (2021–24 avg ÷ 64.0)',data:[1.19,0.85,0.95,0.57,0.91,0.96,0.91,0.92,1.02,1.46,1.32,0.95],backgroundColor:[1.19,0.85,0.95,0.57,0.91,0.96,0.91,0.92,1.02,1.46,1.32,0.95].map(function(v){return v>=1.2?'rgba(23,179,107,.75)':v>=1?'rgba(23,179,107,.45)':v>=0.8?'rgba(232,160,32,.45)':'rgba(229,72,77,.55)'}),borderRadius:4,borderSkipped:false},{label:'Average (1.00)',data:[1,1,1,1,1,1,1,1,1,1,1,1],type:'line',borderColor:'rgba(0,0,0,.3)',borderWidth:1.5,borderDash:[4,4],pointRadius:0,tension:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{label:function(c){return' Index: '+c.parsed.y}}}},scales:{y:{grid:{color:GC},min:0},x:{grid:{display:false}}}}});
 
-new Chart(document.getElementById('ch-hist-cpl'),{type:'bar',data:{labels:['H2 2023','2024','2025','2026 YTD'],datasets:[{label:'Cost per Message (EGP)',data:[30.3,53.6,114.5,141.4],backgroundColor:['rgba(23,179,107,.5)','rgba(62,158,255,.55)','rgba(232,160,32,.6)','rgba(229,72,77,.65)'],borderRadius:4,borderSkipped:false,yAxisID:'y'},{label:'Messages (000s)',data:[9.2,14.1,20.1,12.4],type:'line',borderColor:'rgba(255,255,255,.45)',borderWidth:2,pointRadius:3,pointBackgroundColor:'rgba(255,255,255,.6)',tension:.3,yAxisID:'y2'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{label:function(c){return' '+c.dataset.label+': '+c.parsed.y}}}},scales:{y:{grid:{color:GC},ticks:{callback:function(v){return v+' EGP'}}},y2:{position:'right',grid:{display:false},ticks:{callback:function(v){return v+'K'}}},x:{grid:{display:false}}}}});
+new Chart(document.getElementById('ch-hist-cpl'),{type:'bar',data:{labels:['H2 2023','2024','2025','2026 YTD'],datasets:[{label:'Cost per Message (EGP)',data:[30.3,53.6,114.5,141.4],backgroundColor:['rgba(23,179,107,.5)','rgba(62,158,255,.55)','rgba(232,160,32,.6)','rgba(229,72,77,.65)'],borderRadius:4,borderSkipped:false,yAxisID:'y'},{label:'Messages (000s)',data:[9.2,14.1,20.1,12.4],type:'line',borderColor:'rgba(60,74,66,.65)',borderWidth:2,pointRadius:3,pointBackgroundColor:'rgba(60,74,66,.75)',tension:.3,yAxisID:'y2'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{label:function(c){return' '+c.dataset.label+': '+c.parsed.y}}}},scales:{y:{grid:{color:GC},ticks:{callback:function(v){return v+' EGP'}}},y2:{position:'right',grid:{display:false},ticks:{callback:function(v){return v+'K'}}},x:{grid:{display:false}}}}});
 
 new Chart(document.getElementById('ch-fc-sc'),{type:'bar',data:{labels:['Conservative','Base Case','Recovery','Best Case'],datasets:[{label:'YTD Actual (673)',data:[673,673,673,673],backgroundColor:'rgba(107,143,116,.6)',borderRadius:[0,0,0,0],borderSkipped:false},{label:'Aug-Dec Forecast',data:[263,460,803,959],backgroundColor:['rgba(229,72,77,.7)','rgba(232,160,32,.7)','rgba(62,158,255,.7)','rgba(23,179,107,.75)'],borderRadius:[0,0,0,0],borderSkipped:false},{label:'Remaining Non-Digital (est.)',data:[197,197,197,197],backgroundColor:'rgba(167,139,250,.4)',borderRadius:[4,4,4,4],borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{label:function(c){return' '+c.dataset.label+': '+(c.parsed.y||0)}}},annotation:{}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:GC},suggestedMax:1900}}}});
 
