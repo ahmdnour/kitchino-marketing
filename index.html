@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kitchino Intelligence Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{
+--ink:#05100a;--ink2:#080f0b;--sf:#0e1c12;--sf2:#112019;
+--e:rgba(255,255,255,.07);--e2:rgba(255,255,255,.04);--e3:rgba(255,255,255,.025);
+--ac:#17b36b;--ac2:rgba(23,179,107,.1);--ac3:rgba(23,179,107,.05);
+--rd:#e5484d;--am:#e8a020;--bl:#3e9eff;--pu:#a78bfa;
+--rdg:rgba(229,72,77,.07);--amg:rgba(232,160,32,.07);--blg:rgba(62,158,255,.06);
+--tx:#cee8d8;--tx2:#5e8a6e;--tx3:#2a4236;--tx4:#1a2e22;
+--f:'Inter',system-ui,sans-serif;--m:'IBM Plex Mono',monospace;--s:'Fraunces',Georgia,serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--tx);font-family:var(--f);font-size:13.5px;line-height:1.6;overflow-x:hidden;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 40% at 15% -5%,rgba(23,179,107,.04),transparent);pointer-events:none;z-index:0}
+.shell{display:flex;min-height:100vh;position:relative;z-index:1}
+
+.sb{width:214px;flex-shrink:0;background:var(--ink2);border-right:1px solid var(--e);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;overflow-y:auto}
+.sb-brand{padding:18px 16px 14px;border-bottom:1px solid var(--e);display:flex;align-items:center;gap:9px}
+.sb-mark{width:26px;height:26px;background:var(--ac);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#021508;flex-shrink:0;box-shadow:0 0 14px rgba(23,179,107,.3)}
+.sb-name{font-size:12.5px;font-weight:600;letter-spacing:-.01em}
+.sb-tag{font-size:9.5px;color:var(--tx3);font-family:var(--m)}
+.sb-nav{padding:10px 6px;flex:1}
+.sb-sect{margin-bottom:18px}
+.sb-lbl{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3);padding:3px 10px 7px}
+.sb-btn{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;font-size:12.5px;color:var(--tx2);cursor:pointer;border:none;background:none;width:100%;text-align:left;font-family:var(--f);transition:.15s;white-space:nowrap}
+.sb-btn:hover{background:var(--sf2);color:var(--tx)}
+.sb-btn.on{background:var(--ac2);color:var(--ac)}
+.sb-ico{font-size:13px;width:16px;text-align:center;flex-shrink:0}
+.sb-num{font-family:var(--m);font-size:9px;color:var(--tx3);margin-left:auto}
+.sb-foot{padding:10px 16px 14px;border-top:1px solid var(--e)}
+.sb-live{display:flex;align-items:center;gap:5px;font-size:9.5px;color:var(--tx3);font-family:var(--m);margin-bottom:3px}
+.sb-dot{width:5px;height:5px;border-radius:50%;background:var(--ac);box-shadow:0 0 6px var(--ac);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+.main{margin-left:214px;flex:1;display:flex;flex-direction:column}
+.topbar{height:48px;background:rgba(5,16,10,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--e);display:flex;align-items:center;padding:0 24px;gap:10px;position:sticky;top:0;z-index:90}
+#tb-h{font-size:13px;font-weight:600;color:var(--tx)}
+#tb-q{font-size:11px;color:var(--tx3);font-style:italic}
+.tb-r{margin-left:auto;display:flex;align-items:center;gap:7px}
+.chip{font-family:var(--m);font-size:9px;color:var(--tx3);background:var(--sf);border:1px solid var(--e);border-radius:3px;padding:2px 7px}
+.chip.w{color:var(--am);border-color:rgba(232,160,32,.25);background:rgba(232,160,32,.06)}
+
+.pg{display:none;padding:24px;max-width:1320px}
+.pg.on{display:block;animation:fi .22s ease}
+@keyframes fi{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+
+.warn-bar{background:rgba(232,160,32,.06);border:1px solid rgba(232,160,32,.18);border-radius:8px;padding:10px 14px;margin-bottom:18px;display:flex;gap:10px}
+.warn-ico{flex-shrink:0;margin-top:1px;font-size:13px}
+.warn-txt{font-size:11.5px;color:#c09050;line-height:1.65}
+.warn-txt strong{color:#e8c080}
+
+.hero{background:linear-gradient(135deg,var(--sf) 0%,rgba(8,15,11,.5) 100%);border:1px solid var(--e);border-radius:18px;padding:24px 28px;margin-bottom:22px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(23,179,107,.07),transparent 70%);pointer-events:none}
+.hero-ey{font-family:var(--m);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);margin-bottom:6px}
+.hero-h{font-family:var(--s);font-size:23px;font-weight:300;font-style:italic;color:#fff;line-height:1.2;margin-bottom:10px;letter-spacing:-.015em}
+.hero-p{font-size:13px;color:#92b8a2;line-height:1.8;max-width:780px}
+.hero-p strong{color:#cee8d8}
+
+.ey{font-family:var(--m);font-size:9.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);margin-bottom:12px}
+
+.mb{display:inline-block;font-family:var(--m);font-size:8px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;border-radius:3px;margin-left:6px;vertical-align:middle}
+.mb-fy{background:rgba(23,179,107,.12);color:#17b36b}
+.mb-sp{background:rgba(62,158,255,.1);color:var(--bl)}
+.mb-rr{background:rgba(232,160,32,.1);color:var(--am)}
+.mb-fc{background:rgba(167,139,250,.1);color:var(--pu)}
+
+/* KPI CARD — enhanced with 3-line reference block */
+.kgrid{display:grid;gap:10px;margin-bottom:20px}
+.k4{grid-template-columns:repeat(4,1fr)}
+.k3{grid-template-columns:repeat(3,1fr)}
+.k2{grid-template-columns:repeat(2,1fr)}
+.k{background:var(--sf);border:1px solid var(--e);border-radius:12px;padding:15px 17px;position:relative;overflow:hidden;transition:border-color .15s,transform .15s}
+.k:hover{border-color:rgba(23,179,107,.2);transform:translateY(-1px)}
+.k::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;border-radius:12px 12px 0 0;background:var(--ac)}
+.k.r::before{background:var(--rd)}.k.a::before{background:var(--am)}.k.b::before{background:var(--bl)}.k.n::before{background:var(--e3)}
+.k-lbl{font-size:11px;color:var(--tx2);margin-bottom:6px;font-weight:500}
+.k-val{font-family:var(--m);font-size:23px;font-weight:500;color:#fff;letter-spacing:-.03em;line-height:1;margin-bottom:9px}
+.k.r .k-val{color:var(--rd)}.k.a .k-val{color:var(--am)}.k.b .k-val{color:var(--bl)}
+
+/* THE 3-REFERENCE HINT BLOCK */
+.k-refs{background:var(--sf2);border-radius:7px;padding:7px 9px;margin-bottom:8px;display:flex;flex-direction:column;gap:3px}
+.k-ref{display:flex;justify-content:space-between;align-items:baseline;font-size:10px;gap:8px}
+.k-ref-k{color:var(--tx3);white-space:nowrap;flex-shrink:0}
+.k-ref-v{font-family:var(--m);color:var(--tx2);font-weight:500;text-align:right}
+
+.k-delta{display:inline-flex;align-items:center;font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px;margin-right:4px;margin-bottom:2px}
+.ku{background:rgba(23,179,107,.1);color:#17b36b}
+.kd{background:rgba(229,72,77,.1);color:var(--rd)}
+.kf{background:var(--e);color:var(--tx3)}
+.k-meth{display:block;font-family:var(--m);font-size:8px;color:var(--tx3);margin-top:6px}
+
+/* CARD */
+.card{background:var(--sf);border:1px solid var(--e);border-radius:12px;overflow:hidden}
+.c-head{padding:14px 17px 0}
+.c-title{font-size:12.5px;font-weight:600;color:var(--tx);margin-bottom:2px}
+.c-sub{font-size:11px;color:var(--tx2);margin-bottom:13px}
+.c-body{padding:0 17px 17px}
+.cw{padding:0 17px 17px}
+.cb-m{position:relative;height:220px}
+.cb-l{position:relative;height:280px}
+
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px}
+.g64{display:grid;grid-template-columns:1.6fr 1fr;gap:12px;margin-bottom:20px}
+
+.div{border:none;border-top:1px solid var(--e);margin:18px 0}
+
+.ins{border-radius:8px;padding:12px 14px;border:1px solid;font-size:12.5px;line-height:1.75;color:var(--tx2);margin-bottom:18px}
+.ins strong{color:var(--tx)}
+.ig{background:var(--ac3);border-color:rgba(23,179,107,.18)}
+.ir{background:var(--rdg);border-color:rgba(229,72,77,.18)}
+.ia{background:var(--amg);border-color:rgba(232,160,32,.18)}
+.ib{background:var(--blg);border-color:rgba(62,158,255,.18)}
+
+.fv{padding:16px 20px 20px}
+.fv-row{display:grid;grid-template-columns:110px 1fr 80px;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--e2)}
+.fv-row:last-child{border-bottom:none}
+.fv-lbl{font-size:12px;font-weight:500;color:var(--tx)}
+.fv-track{position:relative;height:26px}
+.fv-bar{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:8px;font-family:var(--m);font-size:10px;font-weight:500;color:rgba(255,255,255,.85);white-space:nowrap;overflow:hidden}
+.fv-num{font-family:var(--m);font-size:11px;text-align:right;white-space:nowrap}
+.fv-conn{padding:3px 0 3px 110px}
+.fv-rate{display:inline-flex;align-items:center;gap:6px;font-family:var(--m);font-size:10px;padding:3px 9px;border-radius:3px}
+
+.callout{background:var(--sf2);border-left:3px solid var(--ac);border-radius:0 8px 8px 0;padding:12px 14px;margin-bottom:18px;font-size:12.5px;color:var(--tx2);line-height:1.7}
+.callout strong{color:var(--tx)}
+
+.pp-box{background:rgba(62,158,255,.04);border:1px solid rgba(62,158,255,.14);border-radius:8px;padding:12px 14px;margin-bottom:18px;font-size:11.5px;color:#8aaccc;line-height:1.7}
+.pp-box strong{color:#b0ccee}
+
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl thead tr{border-bottom:1px solid var(--e)}
+.tbl th{font-size:9.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--tx3);padding:8px 12px;text-align:left;background:var(--sf2)}
+.tbl td{padding:9px 12px;border-bottom:1px solid var(--e2);color:var(--tx);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:rgba(255,255,255,.012)}
+.tbl-total{font-weight:600;background:rgba(23,179,107,.04)!important;border-top:1px solid var(--e)!important}
+.mo{font-family:var(--m)}
+.gr{color:#17b36b;font-weight:500}.rd{color:var(--rd);font-weight:500}.am{color:var(--am);font-weight:500}
+
+.sc{border-radius:12px;padding:17px 20px;border:1px solid}
+.sc-con{background:rgba(229,72,77,.04);border-color:rgba(229,72,77,.2)}
+.sc-base{background:rgba(232,160,32,.04);border-color:rgba(232,160,32,.2)}
+.sc-rec{background:rgba(62,158,255,.04);border-color:rgba(62,158,255,.2)}
+.sc-best{background:rgba(23,179,107,.05);border-color:rgba(23,179,107,.25)}
+.sc-lbl{font-family:var(--m);font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.sc-con .sc-lbl{color:var(--rd)}.sc-base .sc-lbl{color:var(--am)}.sc-rec .sc-lbl{color:var(--bl)}.sc-best .sc-lbl{color:var(--ac)}
+.sc-h{font-size:13px;font-weight:600;margin-bottom:4px}
+.sc-d{font-size:11.5px;color:var(--tx2);line-height:1.6;margin-bottom:11px}
+.sc-r{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--e2);font-size:11.5px}
+.sc-r:last-child{border-bottom:none}
+.sc-k{color:var(--tx2)}.sc-v{font-family:var(--m);font-weight:500}
+
+.rec{background:var(--sf);border:1px solid var(--e);border-radius:12px;padding:15px 17px;margin-bottom:10px}
+.rec-h{display:flex;align-items:flex-start;gap:12px;margin-bottom:7px}
+.rec-ico{font-size:17px;flex-shrink:0;margin-top:1px}
+.rec-cat{font-family:var(--m);font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--tx3);margin-bottom:3px}
+.rec-t{font-size:13px;font-weight:600}
+.rec-b{font-size:12px;color:var(--tx2);line-height:1.7;margin-left:29px}
+.rec-tags{margin:8px 0 0 29px;display:flex;flex-wrap:wrap;gap:5px}
+.rt{font-family:var(--m);font-size:9.5px;padding:2px 7px;border-radius:3px}
+.rt-r{background:rgba(229,72,77,.1);color:var(--rd)}.rt-a{background:rgba(232,160,32,.1);color:var(--am)}.rt-g{background:rgba(23,179,107,.1);color:#17b36b}.rt-b{background:rgba(62,158,255,.1);color:var(--bl)}
+
+footer{border-top:1px solid var(--e);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;max-width:1320px}
+.ft-l{font-family:var(--s);font-style:italic;font-size:13px;color:var(--tx2)}
+.ft-r{font-family:var(--m);font-size:9.5px;color:var(--tx3);text-align:right;line-height:1.7}
+
+@media(max-width:1024px){.k4,.k3{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr}.g64{grid-template-columns:1fr}}
+@media(max-width:768px){.sb{width:48px}.sb .sb-name,.sb .sb-tag,.sb-btn span:not(.sb-ico),.sb-num,.sb-lbl,.sb-foot>*:not(.sb-live){display:none}.main{margin-left:48px}.pg{padding:16px}}
+@media(max-width:540px){.sb{display:none}.main{margin-left:0}.k4,.k3,.k2{grid-template-columns:1fr}.g2,.g3,.g64{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<aside class="sb">
+  <div class="sb-brand">
+    <div class="sb-mark">K</div>
+    <div><div class="sb-name">Kitchino</div><div class="sb-tag">Intelligence</div></div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-sect">
+      <div class="sb-lbl">Overview</div>
+      <button class="sb-btn on" onclick="nav('exec',this,'Executive Summary','What happened?')"><span class="sb-ico">◈</span><span>Executive Summary</span><span class="sb-num">01</span></button>
+    </div>
+    <div class="sb-sect">
+      <div class="sb-lbl">Analytics</div>
+      <button class="sb-btn" onclick="nav('funnel',this,'Funnel Intelligence','Where is the leak?')"><span class="sb-ico">⬡</span><span>Funnel Intelligence</span><span class="sb-num">02</span></button>
+      <button class="sb-btn" onclick="nav('content',this,'Content Intelligence','Why is attention declining?')"><span class="sb-ico">◎</span><span>Content Intelligence</span><span class="sb-num">03</span></button>
+      <button class="sb-btn" onclick="nav('media',this,'Media Intelligence','Where is efficiency lost?')"><span class="sb-ico">◷</span><span>Media Intelligence</span><span class="sb-num">04</span></button>
+      <button class="sb-btn" onclick="nav('pipeline',this,'Pipeline Intelligence','How healthy is the pipeline?')"><span class="sb-ico">⬟</span><span>Pipeline Intelligence</span><span class="sb-num">05</span></button>
+      <button class="sb-btn" onclick="nav('history',this,'Historical Trend','How did we get here?')"><span class="sb-ico">◔</span><span>Historical Trend</span><span class="sb-num">08</span></button>
+    </div>
+    <div class="sb-sect">
+      <div class="sb-lbl">Strategy</div>
+      <button class="sb-btn" onclick="nav('forecast',this,'Forecast Engine','What happens next?')"><span class="sb-ico">◌</span><span>Forecast Engine</span><span class="sb-num">06</span></button>
+      <button class="sb-btn" onclick="nav('recs',this,'Strategic Recommendations','What should we do?')"><span class="sb-ico">◆</span><span>Recommendations</span><span class="sb-num">07</span></button>
+    </div>
+  </nav>
+  <div class="sb-foot">
+    <div class="sb-live"><span class="sb-dot"></span>Jul 29, 2026</div>
+    <div style="font-family:var(--m);font-size:9px;color:var(--tx4);margin-top:2px">Jan 2025 – Jul 29, 2026</div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <span id="tb-h">Executive Summary</span>
+    <span id="tb-q">What happened?</span>
+    <div class="tb-r">
+      <span class="chip">Every card shows 3 references</span>
+      <span class="chip w">Full Year · Same Period · Monthly Avg</span>
+    </div>
+  </div>
+
+  <div style="flex:1">
+
+<!-- ══════════════════════════════════════════
+  01 EXECUTIVE SUMMARY
+══════════════════════════════════════════ -->
+<div id="pg-exec" class="pg on">
+
+<div class="warn-bar">
+  <span class="warn-ico">ⓘ</span>
+  <span class="warn-txt"><strong>How to read every card:</strong> Each KPI shows three reference points — <strong>Full Year 2025</strong> (12 months), <strong>Same Period 2025</strong> (Jan 1–Jul 28, matching 2026's window; actual through Jun 15, extended to Jul 28 at the FY25 run rate), and <strong>Monthly Average</strong> for both years. The headline % change always compares against Same Period (the fairest comparison) unless otherwise labeled.</span>
+</div>
+
+<div class="hero">
+  <div class="hero-ey">01 — Executive Summary</div>
+  <div class="hero-h">Spend up 49% vs same period. Measurements down 27%.</div>
+  <div class="hero-p">2026 YTD (Jan 1 – Jul 28) vs 2025 benchmarks: ad spend reached <strong>1.76M EGP</strong> — +33% above the full-year 2025 monthly pace and roughly +49% vs a same-period estimate (~1.18M) — while total measurements reached <strong>673</strong> (−18% vs the 2025 monthly pace; ~−27% vs a same-period estimate of ~927). On the unified July-29 export basis, message volume held up (+7% monthly pace) but message-to-measurement conversion declined — the pressure point sits between conversation and showroom visit.</div>
+</div>
+
+<div class="ey">Primary KPI — Cost per Digital Measurement</div>
+<div class="kgrid k2" style="margin-bottom:20px">
+
+  <div class="k n">
+    <div class="k-lbl">Cost per Digital Measurement — 2025</div>
+    <div class="k-val">1,937 EGP</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">Full Year rate (2,301,189 / 1,188)</span><span class="k-ref-v">1,937 EGP</span></div>
+      <div class="k-ref"><span class="k-ref-k">Same Period est. (~1,178,813 / ~776)</span><span class="k-ref-v">~1,519 EGP</span></div>
+      <div class="k-ref"><span class="k-ref-k">Formula: Ad Spend ÷ Digital Measurements</span><span class="k-ref-v"></span></div>
+    </div>
+    <span class="k-delta kf">Reference rates</span>
+    <span class="k-meth">FULL YEAR · SAME PERIOD · CRM SOURCE DATA</span>
+  </div>
+
+  <div class="k r">
+    <div class="k-lbl">Cost per Digital Measurement — 2026</div>
+    <div class="k-val">4,377 EGP</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">1,755,011 / 401 digital meas.</span><span class="k-ref-v">4,377 EGP</span></div>
+      <div class="k-ref"><span class="k-ref-k">Digital = Walk-in + CC + FB + IG + WA + Google + Webmail + Le Marché</span><span class="k-ref-v"></span></div>
+      <div class="k-ref"><span class="k-ref-k">Excludes Referral · Repeated · Agent</span><span class="k-ref-v"></span></div>
+    </div>
+    <span class="k-delta kd">+126% vs full-year rate</span>
+    <span class="k-delta kd" style="margin-top:4px">+188% vs same-period est. rate</span>
+    <span class="k-meth">PRIMARY KPI · AD SPEND ÷ DIGITAL MEASUREMENTS</span>
+  </div>
+
+</div>
+
+<div class="ey">Spend & Volume — Full Year · Same Period · Monthly Average</div>
+<div class="kgrid k4" style="margin-bottom:20px">
+
+  <div class="k n">
+    <div class="k-lbl">Ad Spend — 2025</div>
+    <div class="k-val">2.30M</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">Full Year 2025</span><span class="k-ref-v">2,301,189</span></div>
+      <div class="k-ref"><span class="k-ref-k">Same Period (Jan-Jul28 est.)</span><span class="k-ref-v">~1,178,813</span></div>
+      <div class="k-ref"><span class="k-ref-k">Monthly Avg (FY / SP)</span><span class="k-ref-v">191.8K / 170.8K</span></div>
+    </div>
+    <span class="k-delta kf">Reference year</span>
+    <span class="k-meth">FULL YEAR · SAME PERIOD · MONTHLY AVG</span>
+  </div>
+
+  <div class="k a">
+    <div class="k-lbl">Ad Spend — 2026</div>
+    <div class="k-val">1.76M</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">YTD Total (Jan-Jul29)</span><span class="k-ref-v">1,755,011</span></div>
+      <div class="k-ref"><span class="k-ref-k">Monthly Avg (÷6.9mo)</span><span class="k-ref-v">254,349</span></div>
+      <div class="k-ref"><span class="k-ref-k">vs FY25 monthly avg</span><span class="k-ref-v">+33%</span></div>
+    </div>
+    <span class="k-delta kd">+49% vs same-period 2025 est.</span>
+    <span class="k-delta kd" style="margin-top:4px">+33% vs full-year monthly avg</span>
+    <span class="k-meth">SAME PERIOD · RUN RATE</span>
+  </div>
+
+  <div class="k n">
+    <div class="k-lbl">Messages — 2025</div>
+    <div class="k-val">20,096</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">Full Year 2025</span><span class="k-ref-v">20,096</span></div>
+      <div class="k-ref"><span class="k-ref-k">Monthly Avg (FY)</span><span class="k-ref-v">1,675</span></div>
+      <div class="k-ref"><span class="k-ref-k">Basis: unified Jul-29 export</span><span class="k-ref-v"></span></div>
+    </div>
+    <span class="k-delta kf">Reference year</span>
+    <span class="k-meth">FULL YEAR · MONTHLY AVG · UNIFIED BASIS</span>
+  </div>
+
+  <div class="k r">
+    <div class="k-lbl">Messages — 2026</div>
+    <div class="k-val">12,409</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">YTD Total (Jan-Jul29)</span><span class="k-ref-v">12,409</span></div>
+      <div class="k-ref"><span class="k-ref-k">Monthly Avg (÷6.9mo)</span><span class="k-ref-v">1,798</span></div>
+      <div class="k-ref"><span class="k-ref-k">vs FY25 monthly avg</span><span class="k-ref-v">+7%</span></div>
+    </div>
+    <span class="k-delta ku">+7% vs full-year monthly avg</span>
+    <span class="k-delta kf" style="margin-top:4px">Unified Jul-29 export basis</span>
+    <span class="k-meth">RUN RATE · UNIFIED BASIS</span>
+  </div>
+
+</div>
+
+<div class="kgrid k4" style="margin-bottom:22px">
+
+  <div class="k n">
+    <div class="k-lbl">Total Measurements — 2025</div>
+    <div class="k-val">1,419</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">Full Year 2025</span><span class="k-ref-v">1,419</span></div>
+      <div class="k-ref"><span class="k-ref-k">Same Period (Jan-Jul28 est.)</span><span class="k-ref-v">~927</span></div>
+      <div class="k-ref"><span class="k-ref-k">Monthly Avg (FY / SP)</span><span class="k-ref-v">118.2 / 134.3</span></div>
+    </div>
+    <span class="k-delta kf">Reference year</span>
+    <span class="k-meth">FULL YEAR · SAME PERIOD · MONTHLY AVG</span>
+  </div>
+
+  <div class="k r">
+    <div class="k-lbl">Total Measurements — 2026</div>
+    <div class="k-val">673</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">YTD Total (Jan-Jul28)</span><span class="k-ref-v">673</span></div>
+      <div class="k-ref"><span class="k-ref-k">Monthly Avg (÷6.9mo)</span><span class="k-ref-v">97.5</span></div>
+      <div class="k-ref"><span class="k-ref-k">vs FY25 monthly avg</span><span class="k-ref-v">−18%</span></div>
+    </div>
+    <span class="k-delta kd">−27% vs same-period 2025 est. (~927)</span>
+    <span class="k-delta kd" style="margin-top:4px">−18% vs full-year monthly avg</span>
+    <span class="k-meth">SAME PERIOD · RUN RATE</span>
+  </div>
+
+  <div class="k n">
+    <div class="k-lbl">Cost per Measurement — 2025</div>
+    <div class="k-val">1,622</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">Full Year rate</span><span class="k-ref-v">1,622 EGP</span></div>
+      <div class="k-ref"><span class="k-ref-k">Same Period rate (est.)</span><span class="k-ref-v">~1,272 EGP</span></div>
+      <div class="k-ref"><span class="k-ref-k">2,301,189 / 1,419 · ~1,178,813 / ~927</span><span class="k-ref-v"></span></div>
+    </div>
+    <span class="k-delta kf">Reference rate</span>
+    <span class="k-meth">FULL YEAR RATE · SAME PERIOD RATE</span>
+  </div>
+
+  <div class="k r">
+    <div class="k-lbl">Cost per Measurement — 2026</div>
+    <div class="k-val">2,608</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">2026 rate</span><span class="k-ref-v">2,608 EGP</span></div>
+      <div class="k-ref"><span class="k-ref-k">1,755,011 / 673</span><span class="k-ref-v"></span></div>
+    </div>
+    <span class="k-delta kd">+61% vs full-year rate</span>
+    <span class="k-delta kd" style="margin-top:4px">+105% vs same-period est. rate</span>
+    <span class="k-meth">RATE COMPARISON</span>
+  </div>
+
+</div>
+
+<div class="g64">
+  <div class="card">
+    <div class="c-head">
+      <div class="c-title">Monthly Measurements — Jan to Jul <span class="mb mb-sp">2025 THRU JUN 15</span></div>
+      <div class="c-sub">Individual months. 2025 full-year total = 1,419 · same-period (Jan-Jun15) total = 761 (June bar covers Jun 1–15 only) · 2026 total = 673 (through Jul 28; Jul 2025 monthly value not tracked in this view).</div>
+    </div>
+    <div class="cw"><div class="cb-m"><canvas id="ch-exec-meas"></canvas></div></div>
+  </div>
+  <div class="card">
+    <div class="c-head">
+      <div class="c-title">Three Ways to Compare <span class="mb mb-rr">FULL YEAR / SAME PERIOD / RUN RATE</span></div>
+      <div class="c-sub">Same metric, three lenses — full year monthly avg, same-period monthly avg, 2026 monthly avg.</div>
+    </div>
+    <div class="cw"><div class="cb-m"><canvas id="ch-exec-3way"></canvas></div></div>
+  </div>
+</div>
+
+<div class="callout">
+  <strong>Reading this dashboard:</strong> Full Year 2025 figures are the complete 12-month benchmark. Same Period 2025 figures (Jan 1–Jun 15) are the fairest comparison to 2026, since both cover an identical calendar window. Monthly Average figures normalize both periods to a per-month rate, useful for spotting trend direction regardless of period length.
+</div>
+
+</div>
+
+<!-- ══════════════════════════════════════════
+  02 FUNNEL INTELLIGENCE
+══════════════════════════════════════════ -->
+<div id="pg-funnel" class="pg">
+
+<div class="hero">
+  <div class="hero-ey">02 — Funnel Intelligence</div>
+  <div class="hero-h">Clicks above pace. Messages on pace. Both conversion rates lower.</div>
+  <div class="hero-p">On the unified Jul-29 export basis: link clicks run <strong>+44% above the 2025 monthly pace</strong> (432,539 FY25 → 358,066 in 6.9 months) and messages run <strong>+7% above pace</strong> (20,096 FY25 → 12,409 YTD). The Click-to-Message rate moved <strong>−1.18pp</strong> (4.65% → 3.47%) and the Message-to-Measurement rate moved <strong>−1.64pp</strong> (7.06% → 5.42%) — both stages declined by comparable relative magnitudes (−25% and −23%).</div>
+</div>
+
+<div class="pp-box">
+  <strong>Percentage Points vs Percentages:</strong> Click-to-Message moved from 4.65% (full-year 2025) to 3.47% (2026 YTD). The point change = 3.47 − 4.65 = <strong>−1.18pp</strong>. The percentage change = (3.47−4.65)/4.65 = −25.4%. This dashboard reports pp for rate changes since it reflects the true magnitude of the shift in the rate itself. <strong>Basis note:</strong> funnel counts now come from the unified Jul-29 campaign export (results by campaign objective); earlier same-period message benchmarks used a different counting basis and are no longer shown.
+</div>
+
+<div class="g2">
+  <div class="card">
+    <div class="c-head"><div class="c-title">Funnel — 2025 Full Year <span class="mb mb-fy">FULL YEAR (12mo)</span></div><div class="c-sub">Spend → Clicks → Messages → Measurements</div></div>
+    <div class="fv">
+      <div class="fv-row"><div class="fv-lbl">Spend</div><div class="fv-track"><div class="fv-bar" style="width:100%;background:linear-gradient(90deg,#0a6e40,#17b36b)">2,301,189 EGP</div></div><div class="fv-num" style="color:var(--tx2)">192K/mo</div></div>
+      <div class="fv-conn"><span class="fv-rate" style="background:var(--sf2);color:var(--tx2)">→ Clicks</span></div>
+      <div class="fv-row"><div class="fv-lbl">Link Clicks</div><div class="fv-track"><div class="fv-bar" style="width:90%;background:linear-gradient(90deg,#0e8c52,#1dc47a)">432,539</div></div><div class="fv-num" style="color:var(--tx2)">36.0K/mo</div></div>
+      <div class="fv-conn"><span class="fv-rate" style="background:rgba(23,179,107,.12);color:#17b36b">Click→Msg: 4.65%</span></div>
+      <div class="fv-row"><div class="fv-lbl">Messages</div><div class="fv-track"><div class="fv-bar" style="width:52%;background:linear-gradient(90deg,#127a46,#17a860)">20,096</div></div><div class="fv-num" style="color:#17b36b">1,675/mo</div></div>
+      <div class="fv-conn"><span class="fv-rate" style="background:rgba(23,179,107,.12);color:#17b36b">Msg→Meas: 7.06%</span></div>
+      <div class="fv-row"><div class="fv-lbl">Measurements</div><div class="fv-track"><div class="fv-bar" style="width:30%;background:linear-gradient(90deg,#0a5233,#0f7048)">1,419</div></div><div class="fv-num" style="color:#17b36b">118/mo</div></div>
+    </div>
+    <div style="padding:0 20px 16px;font-family:var(--m);font-size:9.5px;color:var(--tx3)">2026 figures through Jul 29 (measurements through Jul 28) · All click/message counts from the unified Jul-29 export · Same-period 2025 (Jan-Jul28 est.): ~927 meas on ~1,178,813 EGP — actual through Jun 15 (761 / 910,341) extended at FY25 run rate.</div>
+  </div>
+  <div class="card">
+    <div class="c-head"><div class="c-title">Funnel — 2026 YTD <span class="mb mb-sp">JAN 1–JUL 29</span></div><div class="c-sub">Unified Jul-29 export basis · rate deltas vs full-year 2025 (labeled)</div></div>
+    <div class="fv">
+      <div class="fv-row"><div class="fv-lbl">Spend</div><div class="fv-track"><div class="fv-bar" style="width:100%;background:linear-gradient(90deg,#7a2020,#c43838)">1,755,011 EGP</div></div><div class="fv-num" style="color:var(--am)">254K/mo</div></div>
+      <div class="fv-conn"><span class="fv-rate" style="background:rgba(232,160,32,.1);color:var(--am)">Clicks +44% vs FY25 monthly pace</span></div>
+      <div class="fv-row"><div class="fv-lbl">Link Clicks</div><div class="fv-track"><div class="fv-bar" style="width:100%;background:linear-gradient(90deg,#6a3010,#c86020)">358,066</div></div><div class="fv-num" style="color:var(--am)">51.9K/mo</div></div>
+      <div class="fv-conn"><span class="fv-rate" style="background:rgba(229,72,77,.12);color:var(--rd)">Click→Msg: 3.47% (−1.18pp vs FY25)</span></div>
+      <div class="fv-row"><div class="fv-lbl">Messages</div><div class="fv-track"><div class="fv-bar" style="width:33%;background:linear-gradient(90deg,#6a2020,#922828)">12,409</div></div><div class="fv-num" style="color:var(--am)">1,798/mo</div></div>
+      <div class="fv-conn"><span class="fv-rate" style="background:rgba(232,160,32,.1);color:var(--am)">Msg→Meas: 5.42% (−1.64pp vs FY25)</span></div>
+      <div class="fv-row"><div class="fv-lbl">Measurements</div><div class="fv-track"><div class="fv-bar" style="width:19%;background:linear-gradient(90deg,#5a1818,#7a2020)">673</div></div><div class="fv-num" style="color:var(--rd)">97.5/mo</div></div>
+    </div>
+    <div style="padding:0 20px 16px;font-family:var(--m);font-size:9.5px;color:var(--tx3)">vs full year 2025 totals (unified Jul-29 export): 2,301,189 EGP · 432,539 clicks · 20,096 msgs · 1,419 meas.</div>
+  </div>
+</div>
+
+<div class="ey">Funnel Rates — Full Year · Same Period · 2026</div>
+<div class="kgrid k4">
+
+  <div class="k r">
+    <div class="k-lbl">Click→Message — 2026</div>
+    <div class="k-val">3.47%</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">Full Year 2025</span><span class="k-ref-v">4.65%</span></div>
+      <div class="k-ref"><span class="k-ref-k">2026 YTD</span><span class="k-ref-v">3.47%</span></div>
+      <div class="k-ref"><span class="k-ref-k">Basis: unified Jul-29 export</span><span class="k-ref-v"></span></div>
+    </div>
+    <span class="k-delta kd">−1.18pp vs full year</span>
+    <span class="k-delta kd" style="margin-top:4px">−25% relative change</span>
+    <span class="k-meth">RATE COMPARISON (pp) · UNIFIED BASIS</span>
+  </div>
+
+  <div class="k a">
+    <div class="k-lbl">Msg→Measurement — 2026</div>
+    <div class="k-val">5.42%</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">Full Year 2025</span><span class="k-ref-v">7.06%</span></div>
+      <div class="k-ref"><span class="k-ref-k">2026 YTD</span><span class="k-ref-v">5.42%</span></div>
+      <div class="k-ref"><span class="k-ref-k">Basis: unified Jul-29 export</span><span class="k-ref-v"></span></div>
+    </div>
+    <span class="k-delta kd">−1.64pp vs full year</span>
+    <span class="k-delta kd" style="margin-top:4px">−23% relative change</span>
+    <span class="k-meth">RATE COMPARISON (pp) · UNIFIED BASIS</span>
+  </div>
+
+  <div class="k r">
+    <div class="k-lbl">Cost per Message — 2026</div>
+    <div class="k-val">141 EGP</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">Full Year 2025</span><span class="k-ref-v">115 EGP</span></div>
+      <div class="k-ref"><span class="k-ref-k">1,755,011 / 12,409</span><span class="k-ref-v">141 EGP</span></div>
+      <div class="k-ref"><span class="k-ref-k">Basis: unified Jul-29 export</span><span class="k-ref-v"></span></div>
+    </div>
+    <span class="k-delta kd">+23% vs full year</span>
+    <span class="k-delta kf" style="margin-top:4px">Unified basis — SP benchmark n/a</span>
+    <span class="k-meth">RATE COMPARISON · UNIFIED BASIS</span>
+  </div>
+
+  <div class="k r">
+    <div class="k-lbl">Cost per Total Measurement — 2026</div>
+    <div class="k-val">2,608 EGP</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">Full Year 2025</span><span class="k-ref-v">1,622 EGP</span></div>
+      <div class="k-ref"><span class="k-ref-k">Same Period 2025 (est.)</span><span class="k-ref-v">~1,272 EGP</span></div>
+      <div class="k-ref"><span class="k-ref-k">2026</span><span class="k-ref-v">2,608 EGP</span></div>
+    </div>
+    <span class="k-delta kd">+61% vs full year</span>
+    <span class="k-delta kd" style="margin-top:4px">+105% vs same-period est.</span>
+    <span class="k-meth">RATE COMPARISON</span>
+  </div>
+
+</div>
+
+<div class="ins ir">
+  <strong>Both stages under pressure:</strong> On the unified Jul-29 export basis, Click-to-Message moved −1.18pp (−25% relative) and Message-to-Measurement moved −1.64pp (−23% relative) vs full-year 2025. Message volume itself runs +7% above the 2025 monthly pace — the decline concentrates in conversion rates, not conversation volume. Potential contributing factors (inspection-fee policy, creative mix) require further investigation.
+</div>
+
+</div>
+
+<!-- ══════════════════════════════════════════
+  03 CONTENT INTELLIGENCE
+══════════════════════════════════════════ -->
+<div id="pg-content" class="pg">
+
+<div class="hero">
+  <div class="hero-ey">03 — Content Intelligence</div>
+  <div class="hero-h">Reach holds. Watch-through and publishing volume are lower. Clear room to grow.</div>
+  <div class="hero-p">Instagram Reels reach an average of <strong>60,059 accounts per post</strong> in 2026, with <strong>26,197 average views (43%)</strong>. Facebook's 3-to-15 second retention moved from <strong>41% to 20%</strong>. Reel publishing frequency is at 3.3/month vs ~4.9/month in 2025. On the paid side (verified through Jul 29): Hook Rate is close to the 2025 level (19.6% vs 21.9%), while Hold Rate sits below it (18.2% vs 27.4%) — improving early retention is the main creative opportunity. Organic content counts below reflect data through Jun 15.</div>
+</div>
+
+<div class="ey">Paid Video Quality — Meta Ads, impression-weighted <span style="opacity:.6">(verified through Jul 29, 2026)</span></div>
+<div class="kgrid k4" style="margin-bottom:20px">
+
+  <div class="k a">
+    <div class="k-lbl">Hook Rate (Paid) — 2026</div>
+    <div class="k-val">19.6%</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">2025 (impression-weighted)</span><span class="k-ref-v">21.9%</span></div>
+      <div class="k-ref"><span class="k-ref-k">2026 YTD</span><span class="k-ref-v">19.6%</span></div>
+    </div>
+    <span class="k-delta kd">−2.3pp vs 2025 — close to prior level</span>
+    <span class="k-meth">ALL ACTIVE CAMPAIGNS · WEIGHTED</span>
+  </div>
+
+  <div class="k r">
+    <div class="k-lbl">Hold Rate (Paid) — 2026</div>
+    <div class="k-val">18.2%</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">2025 (impression-weighted)</span><span class="k-ref-v">27.4%</span></div>
+      <div class="k-ref"><span class="k-ref-k">2026 YTD</span><span class="k-ref-v">18.2%</span></div>
+    </div>
+    <span class="k-delta kd">−9.2pp vs 2025 — main improvement area</span>
+    <span class="k-meth">ALL ACTIVE CAMPAIGNS · WEIGHTED</span>
+  </div>
+
+  <div class="k a">
+    <div class="k-lbl">Thumb Stop Ratio (Paid) — 2026</div>
+    <div class="k-val">10.1%</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">2025 (impression-weighted)</span><span class="k-ref-v">13.7%</span></div>
+      <div class="k-ref"><span class="k-ref-k">2026 YTD</span><span class="k-ref-v">10.1%</span></div>
+    </div>
+    <span class="k-delta kd">−3.6pp vs 2025</span>
+    <span class="k-meth">ALL ACTIVE CAMPAIGNS · WEIGHTED</span>
+  </div>
+
+  <div class="k r">
+    <div class="k-lbl">Video (ThruPlay) Campaigns — 2026</div>
+    <div class="k-val">2</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">2025: campaigns / spend</span><span class="k-ref-v">16 / 200,632</span></div>
+      <div class="k-ref"><span class="k-ref-k">2026: campaigns / spend</span><span class="k-ref-v">2 / 90,789</span></div>
+    </div>
+    <span class="k-delta kd">Lower campaign count — room to expand</span>
+    <span class="k-meth">VERIFIED FROM JUL-29 EXPORT</span>
+  </div>
+
+</div>
+
+<div class="ins ia" style="margin-bottom:20px">
+  <strong>Reading the paid video picture:</strong> Hook Rate (first-3-seconds attention) is holding near the 2025 level, while Hold Rate (watching past 3 seconds) sits further below it. This suggests openings still catch attention, and the larger opportunity is in what follows the first seconds. Dedicated video campaign count is also lower (2 vs 16) — expanding video production alongside retention-focused edits is the clearest path. Potential contributing factors require creative testing to confirm.
+</div>
+
+<div class="ey">Attention Quality — Per-Post Averages (organic · through Jun 15, period-independent)</div>
+<div class="kgrid k4" style="margin-bottom:20px">
+
+  <div class="k r">
+    <div class="k-lbl">FB Video Retention (3s→15s) — 2026</div>
+    <div class="k-val">20%</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">2025 (full year & same period)</span><span class="k-ref-v">41%</span></div>
+      <div class="k-ref"><span class="k-ref-k">2026</span><span class="k-ref-v">20%</span></div>
+    </div>
+    <span class="k-delta kd">−21pp · per-post rate, period-independent</span>
+    <span class="k-meth">PER-POST AVERAGE RATE</span>
+  </div>
+
+  <div class="k r">
+    <div class="k-lbl">IG Reel Avg Views — 2026</div>
+    <div class="k-val">26,197</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">2025 per-post avg</span><span class="k-ref-v">138,315</span></div>
+      <div class="k-ref"><span class="k-ref-k">2026 per-post avg</span><span class="k-ref-v">26,197</span></div>
+    </div>
+    <span class="k-delta kd">−81% · per-post, period-independent</span>
+    <span class="k-meth">PER-POST AVERAGE</span>
+  </div>
+
+  <div class="k a">
+    <div class="k-lbl">IG Reel Avg Reach — 2026</div>
+    <div class="k-val">60,059</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">Reach per Reel</span><span class="k-ref-v">60,059</span></div>
+      <div class="k-ref"><span class="k-ref-k">Views per Reel</span><span class="k-ref-v">26,197 (43%)</span></div>
+    </div>
+    <span class="k-delta kf">Distribution active · 2.3× reach vs views</span>
+    <span class="k-meth">PER-POST AVERAGE</span>
+  </div>
+
+  <div class="k">
+    <div class="k-lbl">FB Video Avg Views — 2026</div>
+    <div class="k-val">254,044</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">2025 per-post avg (66 videos)</span><span class="k-ref-v">203,928</span></div>
+      <div class="k-ref"><span class="k-ref-k">2026 per-post avg (20 videos)</span><span class="k-ref-v">254,044</span></div>
+    </div>
+    <span class="k-delta ku">+25% · per-post, period-independent</span>
+    <span class="k-meth">PER-POST AVERAGE</span>
+  </div>
+
+</div>
+
+<div class="ey">Content Volume — Full Year · Same Period · 2026</div>
+<div class="kgrid k4" style="margin-bottom:20px">
+
+  <div class="k n">
+    <div class="k-lbl">IG Reels Published — 2025</div>
+    <div class="k-val">58</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">Full Year total</span><span class="k-ref-v">58</span></div>
+      <div class="k-ref"><span class="k-ref-k">Same Period (est.)</span><span class="k-ref-v">~27</span></div>
+      <div class="k-ref"><span class="k-ref-k">Monthly Avg (FY / SP)</span><span class="k-ref-v">4.8 / 4.9</span></div>
+    </div>
+    <span class="k-delta kf">Reference year</span>
+    <span class="k-meth">FULL YEAR · SAME PERIOD EST.</span>
+  </div>
+
+  <div class="k r">
+    <div class="k-lbl">IG Reels Published — 2026</div>
+    <div class="k-val">18</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">Total through Jun 15</span><span class="k-ref-v">18</span></div>
+      <div class="k-ref"><span class="k-ref-k">Monthly Avg (÷5.5mo)</span><span class="k-ref-v">3.3</span></div>
+    </div>
+    <span class="k-delta kd">−33% vs same-period est. count (18 vs ~27)</span>
+    <span class="k-delta kd" style="margin-top:4px">−32% vs full-year monthly avg</span>
+    <span class="k-meth">SAME PERIOD · RUN RATE</span>
+  </div>
+
+  <div class="k n">
+    <div class="k-lbl">FB Organic Messages — 2025</div>
+    <div class="k-val">1,860</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">Full Year total</span><span class="k-ref-v">1,860</span></div>
+      <div class="k-ref"><span class="k-ref-k">Same Period (est.)</span><span class="k-ref-v">~852</span></div>
+      <div class="k-ref"><span class="k-ref-k">Monthly Avg</span><span class="k-ref-v">155</span></div>
+    </div>
+    <span class="k-delta kf">Reference year</span>
+    <span class="k-meth">FULL YEAR · SAME PERIOD EST.</span>
+  </div>
+
+  <div class="k r">
+    <div class="k-lbl">FB Organic Messages — 2026</div>
+    <div class="k-val">388</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">Total through Jun 15</span><span class="k-ref-v">388</span></div>
+      <div class="k-ref"><span class="k-ref-k">Monthly Avg (÷5.5mo)</span><span class="k-ref-v">70.5</span></div>
+    </div>
+    <span class="k-delta kd">−55% vs same-period total</span>
+    <span class="k-delta kd" style="margin-top:4px">−55% vs full-year monthly avg</span>
+    <span class="k-meth">SAME PERIOD · RUN RATE</span>
+  </div>
+
+</div>
+
+<div class="card" style="margin-bottom:18px">
+  <div class="c-head"><div class="c-title">Format Performance — Full Year & Same Period Counts <span class="mb mb-fy">FULL YEAR</span><span class="mb mb-sp">SAME PERIOD EST.</span></div><div class="c-sub">Both reference points shown. Views columns are per-post averages (period-independent).</div></div>
+  <div class="c-body" style="padding-top:0">
+    <table class="tbl">
+      <thead><tr><th>Platform</th><th>Format</th><th>2025 Full Year</th><th>2025 Same Period (est.)</th><th>2026 (thru Jun 15)</th><th>Avg Views 2025</th><th>Avg Views 2026</th></tr></thead>
+      <tbody>
+        <tr><td>Facebook</td><td>Videos</td><td class="mo">66</td><td class="mo">~30</td><td class="mo">20</td><td class="mo">203,928</td><td class="mo gr">254,044</td></tr>
+        <tr><td>Facebook</td><td>Photos</td><td class="mo">46</td><td class="mo">~21</td><td class="mo">23</td><td class="mo">75,877</td><td class="mo am">59,998</td></tr>
+        <tr><td>Facebook</td><td>Stories</td><td class="mo">0</td><td class="mo">0</td><td class="mo rd">53</td><td class="mo">—</td><td class="mo am">low</td></tr>
+        <tr><td>Instagram</td><td>Reels</td><td class="mo">58</td><td class="mo">~27</td><td class="mo am">18</td><td class="mo">138,315</td><td class="mo rd">26,197</td></tr>
+        <tr><td>Instagram</td><td>Carousel</td><td class="mo">32</td><td class="mo">~15</td><td class="mo">16</td><td class="mo">68,196</td><td class="mo rd">8,040</td></tr>
+        <tr><td>Instagram</td><td>Stories</td><td class="mo">398</td><td class="mo">~183</td><td class="mo">112</td><td class="mo">651</td><td class="mo">743</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="g2">
+  <div class="card">
+    <div class="c-head"><div class="c-title">Content Volume Comparison <span class="mb mb-fy">FY</span><span class="mb mb-sp">SP</span><span class="mb mb-rr">2026</span></div><div class="c-sub">Posts published — three reference points per format</div></div>
+    <div class="cw"><div class="cb-m"><canvas id="ch-cont-vol"></canvas></div></div>
+  </div>
+  <div class="card">
+    <div class="c-head"><div class="c-title">Organic Messages — All Three Views <span class="mb mb-fy">FY</span><span class="mb mb-sp">SP</span><span class="mb mb-rr">2026</span></div><div class="c-sub">FB declining across all lenses · IG improving in same period</div></div>
+    <div class="cw"><div class="cb-m"><canvas id="ch-cont-org"></canvas></div></div>
+  </div>
+</div>
+
+</div>
+
+<!-- ══════════════════════════════════════════
+  04 MEDIA INTELLIGENCE
+══════════════════════════════════════════ -->
+<div id="pg-media" class="pg">
+
+<div class="hero">
+  <div class="hero-ey">04 — Media Intelligence</div>
+  <div class="hero-h">CPL is up by every measure. The size of the gap depends on which year you anchor to.</div>
+  <div class="hero-p">On the unified Jul-29 export basis, CPL reached <strong>141 EGP</strong> in 2026 YTD — <strong>+23%</strong> against the full-year 2025 rate (115 EGP). Cost per digital measurement rose far more sharply: <strong>4,377 EGP vs 1,937 (FY25), +126%</strong> — the efficiency gap sits in conversion to measurements, not in message generation.</div>
+</div>
+
+<div class="ey">Efficiency Rates — Full Year · Same Period · 2026</div>
+<div class="kgrid k4" style="margin-bottom:20px">
+
+  <div class="k n">
+    <div class="k-lbl">CPL — 2025</div>
+    <div class="k-val">115 EGP</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">Full Year rate</span><span class="k-ref-v">115 EGP</span></div>
+      <div class="k-ref"><span class="k-ref-k">2,301,189 / 20,096</span><span class="k-ref-v"></span></div>
+    </div>
+    <span class="k-delta kf">Reference rate — unified basis</span>
+    <span class="k-meth">FULL YEAR · UNIFIED BASIS</span>
+  </div>
+
+  <div class="k r">
+    <div class="k-lbl">CPL — 2026</div>
+    <div class="k-val">141 EGP</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">1,755,011 / 12,409</span><span class="k-ref-v">141 EGP</span></div>
+    </div>
+    <span class="k-delta kd">+23% vs full year</span>
+    <span class="k-delta kf" style="margin-top:4px">Unified basis — SP benchmark n/a</span>
+    <span class="k-meth">RATE COMPARISON · UNIFIED BASIS</span>
+  </div>
+
+  <div class="k n">
+    <div class="k-lbl">Cost / Digital Measurement — 2025</div>
+    <div class="k-val">1,937 EGP</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">Full Year rate</span><span class="k-ref-v">1,937 EGP</span></div>
+      <div class="k-ref"><span class="k-ref-k">Same Period rate (est.)</span><span class="k-ref-v">~1,519 EGP</span></div>
+    </div>
+    <span class="k-delta kf">Reference rates</span>
+    <span class="k-meth">FULL YEAR · SAME PERIOD</span>
+  </div>
+
+  <div class="k r">
+    <div class="k-lbl">Cost / Digital Measurement — 2026</div>
+    <div class="k-val">4,377 EGP</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">1,755,011 / 401 digital meas.</span><span class="k-ref-v">4,377 EGP</span></div>
+    </div>
+    <span class="k-delta kd">+126% vs full year</span>
+    <span class="k-delta kd" style="margin-top:4px">+188% vs same-period est.</span>
+    <span class="k-meth">RATE COMPARISON</span>
+  </div>
+
+</div>
+
+<div class="g2">
+  <div class="card">
+    <div class="c-head"><div class="c-title">CPL Monthly — 2026 <span class="mb mb-sp">JAN–JUN · PRIOR BASIS</span></div><div class="c-sub">Monthly view retains the prior message-count basis; headline 2026 CPL (141 EGP) uses the unified Jul-29 export.</div></div>
+    <div class="cw"><div class="cb-m"><canvas id="ch-med-cpl"></canvas></div></div>
+  </div>
+  <div class="card">
+    <div class="c-head"><div class="c-title">Spend vs Messages — Monthly Divergence <span class="mb mb-sp">JAN–JUN · PRIOR BASIS</span></div><div class="c-sub">Monthly view retains the prior message-count basis; headline totals use the unified Jul-29 export (12,409 msgs / 1.76M EGP)</div></div>
+    <div class="cw"><div class="cb-m"><canvas id="ch-med-div"></canvas></div></div>
+  </div>
+</div>
+
+<div class="ins ia">
+  <strong>Reading the gap:</strong> Whichever 2025 benchmark you use — full year or same period — the direction is the same: cost per outcome rose materially in 2026. The same-period comparison shows a larger gap because early-year months in 2025 ran more efficiently than the year-end average.
+</div>
+
+<div class="pp-box">
+  <strong>Structural cost context:</strong> Year-over-year cost comparisons should be read against macroeconomic changes, not as a pure performance signal: EGP devaluation and inflation raise USD-billed Meta/Google auction costs in EGP terms, and platform CPMs have risen independently. Part of the CPL and cost-per-measurement increase is structural market inflation; the remainder reflects funnel conversion changes. Separating the two precisely requires currency-adjusted benchmarks, which are not yet built into this dashboard.
+</div>
+
+</div>
+
+<!-- ══════════════════════════════════════════
+  05 PIPELINE INTELLIGENCE
+══════════════════════════════════════════ -->
+<div id="pg-pipeline" class="pg">
+
+<div class="warn-bar">
+  <span class="warn-ico">ⓘ</span>
+  <span class="warn-txt"><strong>Source methodology:</strong> Walk-in, Call Center, WhatsApp, Facebook, Instagram, Google, and Webmail are merged into <strong>Digital Marketing</strong>. Le Marché events are included as acquisition since they receive ad spend. Repeated, Referral, and Agent are tracked separately.</span>
+</div>
+
+<div class="hero">
+  <div class="hero-ey">05 — Pipeline Intelligence</div>
+  <div class="hero-h">Digital acquisition fell on every measure. Repeat customers grew sharply.</div>
+  <div class="hero-p">Digital Marketing measurements (incl. Le Marché) reached <strong>401 in 2026 YTD vs a same-period 2025 estimate of ~776 (−48%)</strong> — 58.1/month vs the <strong>full-year 2025 pace of 99/month (−41%)</strong> and the same-period pace of 112.5/month (−48%). Meanwhile repeat customers rose sharply across every lens.</div>
+</div>
+
+<div class="ey">Digital Marketing — Full Year · Same Period · 2026</div>
+<div class="kgrid k4" style="margin-bottom:20px">
+
+  <div class="k n">
+    <div class="k-lbl">Digital Marketing Meas — 2025</div>
+    <div class="k-val">1,188</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">Full Year total</span><span class="k-ref-v">1,188</span></div>
+      <div class="k-ref"><span class="k-ref-k">Same Period (Jan-Jul28 est.)</span><span class="k-ref-v">~776</span></div>
+      <div class="k-ref"><span class="k-ref-k">Monthly Avg (FY / SP)</span><span class="k-ref-v">99.0 / 112.5</span></div>
+    </div>
+    <span class="k-delta kf">Reference year</span>
+    <span class="k-meth">FULL YEAR · SAME PERIOD EST.</span>
+  </div>
+
+  <div class="k r">
+    <div class="k-lbl">Digital Marketing Meas — 2026</div>
+    <div class="k-val">401</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">YTD Total (Jan-Jul28)</span><span class="k-ref-v">401</span></div>
+      <div class="k-ref"><span class="k-ref-k">Monthly Avg (÷6.9mo)</span><span class="k-ref-v">58.1</span></div>
+    </div>
+    <span class="k-delta kd">−48% vs same-period est. (~776)</span>
+    <span class="k-delta kd" style="margin-top:4px">−41% vs full-year monthly avg</span>
+    <span class="k-meth">SAME PERIOD · RUN RATE</span>
+  </div>
+
+  <div class="k n">
+    <div class="k-lbl">Repeated Customers — 2025</div>
+    <div class="k-val">81</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">Full Year total</span><span class="k-ref-v">81</span></div>
+      <div class="k-ref"><span class="k-ref-k">Same Period (est.)</span><span class="k-ref-v">~37</span></div>
+      <div class="k-ref"><span class="k-ref-k">Monthly Avg</span><span class="k-ref-v">6.8</span></div>
+    </div>
+    <span class="k-delta kf">Reference year</span>
+    <span class="k-meth">FULL YEAR · SAME PERIOD EST.</span>
+  </div>
+
+  <div class="k">
+    <div class="k-lbl">Repeated Customers — 2026</div>
+    <div class="k-val">103</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">Total (thru Jun 15 — window pending CRM confirmation)</span><span class="k-ref-v">103</span></div>
+      <div class="k-ref"><span class="k-ref-k">Monthly Avg (÷5.5mo)</span><span class="k-ref-v">18.7</span></div>
+    </div>
+    <span class="k-delta ku">+178% vs same-period est.</span>
+    <span class="k-delta ku" style="margin-top:4px">+27% already exceeds full year</span>
+    <span class="k-meth">SAME PERIOD · RUN RATE</span>
+  </div>
+
+</div>
+
+<div class="g2">
+  <div class="card">
+    <div class="c-head"><div class="c-title">Source Mix — 2025 Full Year <span class="mb mb-fy">FULL YEAR</span></div><div class="c-sub">Digital Marketing = Walk-in+CC+WA+IG+FB+Google+Webmail+Le Marché</div></div>
+    <div class="cw"><div class="cb-m"><canvas id="ch-pipe-fy25"></canvas></div></div>
+  </div>
+  <div class="card">
+    <div class="c-head"><div class="c-title">Source Mix — 2026 YTD <span class="mb mb-sp">JAN–JUL 28</span></div><div class="c-sub">Compare against same-period 2025 estimate alongside</div></div>
+    <div class="cw"><div class="cb-m"><canvas id="ch-pipe-26"></canvas></div></div>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:18px">
+  <div class="c-head"><div class="c-title">Monthly Measurements — Jan to Jul <span class="mb mb-sp">2025 THRU JUN 15</span></div><div class="c-sub">2025 Jan-Jun15 total = 761 (vs full-year 1,419) · 2026 total = 673 (through Jul 28; Jul 2025 not tracked in this view)</div></div>
+  <div class="cw"><div class="cb-l"><canvas id="ch-pipe-monthly"></canvas></div></div>
+</div>
+
+<div class="g2">
+  <div class="card">
+    <div class="c-head"><div class="c-title">Digital Marketing Sources — 2025 Full Year <span class="mb mb-fy">FULL YEAR</span></div></div>
+    <div class="c-body" style="padding-top:0">
+      <table class="tbl">
+        <thead><tr><th>Source</th><th>Full Year</th><th>Same Period Jan-Jul28 (est.)</th><th>Monthly Avg</th></tr></thead>
+        <tbody>
+          <tr><td>Walk-in</td><td class="mo">596</td><td class="mo">~369</td><td class="mo">49.7</td></tr>
+          <tr><td>Call Center</td><td class="mo">306</td><td class="mo">~189</td><td class="mo">25.5</td></tr>
+          <tr><td>Le Marché (all events)</td><td class="mo">159</td><td class="mo">~138</td><td class="mo">13.3</td></tr>
+          <tr><td>WhatsApp</td><td class="mo">61</td><td class="mo">~38</td><td class="mo">5.1</td></tr>
+          <tr><td>Instagram</td><td class="mo">30</td><td class="mo">~19</td><td class="mo">2.5</td></tr>
+          <tr><td>Facebook</td><td class="mo">22</td><td class="mo">~14</td><td class="mo">1.8</td></tr>
+          <tr><td>Webmail + Google</td><td class="mo">14</td><td class="mo">~9</td><td class="mo">1.2</td></tr>
+          <tr class="tbl-total"><td>Digital Marketing Total</td><td class="mo gr">1,188</td><td class="mo gr">~776</td><td class="mo gr">99.0</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card">
+    <div class="c-head"><div class="c-title">Digital Marketing Sources — 2026 YTD <span class="mb mb-sp">EXACT</span></div></div>
+    <div class="c-body" style="padding-top:0">
+      <table class="tbl">
+        <thead><tr><th>Source</th><th>YTD Total</th><th>Monthly Avg</th><th>Share of Digital</th></tr></thead>
+        <tbody>
+          <tr><td>Walk-in</td><td class="mo">213</td><td class="mo">30.9</td><td class="mo">53.1%</td></tr>
+          <tr><td>Call Center</td><td class="mo">91</td><td class="mo">13.2</td><td class="mo">22.7%</td></tr>
+          <tr><td>Le Marché (all events)</td><td class="mo">67</td><td class="mo">9.7</td><td class="mo">16.7%</td></tr>
+          <tr><td>Facebook</td><td class="mo">11</td><td class="mo">1.6</td><td class="mo">2.7%</td></tr>
+          <tr><td>Webmail</td><td class="mo">10</td><td class="mo">1.4</td><td class="mo">2.5%</td></tr>
+          <tr><td>Instagram</td><td class="mo">4</td><td class="mo">0.6</td><td class="mo">1.0%</td></tr>
+          <tr><td>WhatsApp + Google</td><td class="mo">5</td><td class="mo">0.7</td><td class="mo">1.2%</td></tr>
+          <tr class="tbl-total"><td>Digital Marketing Total</td><td class="mo rd">401</td><td class="mo rd">58.1</td><td class="mo">100%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- ══════════════════════════════════════════
+  08 HISTORICAL TREND (Layer 1)
+══════════════════════════════════════════ -->
+<div id="pg-history" class="pg">
+
+<div class="warn-bar">
+  <span class="warn-ico">ⓘ</span>
+  <span class="warn-txt"><strong>Source & methodology:</strong> 2021–2024 monthly measurement counts come from the sales MEGA sheet (Years Comparison / 2024 Final Report tables — adopted because their monthly values reconcile exactly with stated annual totals; conflicting draft-table variants were rejected). Figures are <strong>pending final confirmation by management</strong>. 2025–2026 counts come from the CRM basis used elsewhere in this dashboard. This layer shows <strong>long-term volume trend only</strong> — no cost or efficiency comparisons are made across these years, and no digital/non-digital split exists before 2025.</span>
+</div>
+
+<div class="hero">
+  <div class="hero-ey">08 — Historical Trend · Layer 1</div>
+  <div class="hero-h">Six years of measurement volume. Growth in every year through 2025.</div>
+  <div class="hero-p">Total measurements grew from <strong>655 (2021)</strong> to <strong>1,419 (2025)</strong> — +6.6%, +21.5%, +2.7%, then +63% year over year. 2026 stands at <strong>673 through Jul 28</strong>, with a full-year forecast range of ~1,133–1,829 (see Forecast Engine). Historical seasonality is consistent: <strong>October (index 1.46) and November (1.32)</strong> are the strongest months in every year from 2021 to 2024.</div>
+</div>
+
+<div class="ey">Annual Measurement Volume — All Sources <span style="opacity:.6">(counts only — no cost comparison)</span></div>
+<div class="kgrid k4" style="margin-bottom:20px">
+
+  <div class="k n">
+    <div class="k-lbl">2021 → 2022</div>
+    <div class="k-val">655 → 698</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">YoY growth</span><span class="k-ref-v">+6.6%</span></div>
+      <div class="k-ref"><span class="k-ref-k">Source: MEGA sheet (pending confirmation)</span><span class="k-ref-v"></span></div>
+    </div>
+    <span class="k-delta kf">Historical — trend only</span>
+    <span class="k-meth">ANNUAL TOTALS · COUNT BASIS</span>
+  </div>
+
+  <div class="k n">
+    <div class="k-lbl">2022 → 2023</div>
+    <div class="k-val">698 → 848</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">YoY growth</span><span class="k-ref-v">+21.5%</span></div>
+      <div class="k-ref"><span class="k-ref-k">Source: MEGA sheet (pending confirmation)</span><span class="k-ref-v"></span></div>
+    </div>
+    <span class="k-delta kf">Historical — trend only</span>
+    <span class="k-meth">ANNUAL TOTALS · COUNT BASIS</span>
+  </div>
+
+  <div class="k n">
+    <div class="k-lbl">2023 → 2024</div>
+    <div class="k-val">848 → 871</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">YoY growth</span><span class="k-ref-v">+2.7%</span></div>
+      <div class="k-ref"><span class="k-ref-k">Dec-24 adopted as 64 (871) per Final Report</span><span class="k-ref-v"></span></div>
+    </div>
+    <span class="k-delta kf">Historical — trend only</span>
+    <span class="k-meth">ANNUAL TOTALS · COUNT BASIS</span>
+  </div>
+
+  <div class="k b">
+    <div class="k-lbl">2024 → 2025</div>
+    <div class="k-val">871 → 1,419</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">YoY growth</span><span class="k-ref-v">+63%</span></div>
+      <div class="k-ref"><span class="k-ref-k">2025 from CRM basis (different source than 2021–24)</span><span class="k-ref-v"></span></div>
+    </div>
+    <span class="k-delta ku">Largest step — coincides with expansion & paid-media scale-up</span>
+    <span class="k-meth">ANNUAL TOTALS · MIXED SOURCES — LABELED</span>
+  </div>
+
+</div>
+
+<div class="pp-box">
+  <strong>Economic & structural context (mandatory reading for this page):</strong> 2021–2026 spans EGP devaluations, high inflation, rising USD-billed Meta/Google ad costs, and Kitchino's own expansion (showrooms, exhibitions, brand awareness). Volume growth across these years reflects both marketing and structural change — costs are <strong>never</strong> compared across this range, and no year-to-year percentage here should be read as marketing efficiency.
+</div>
+
+<div class="g2">
+  <div class="card">
+    <div class="c-head"><div class="c-title">Annual Totals 2021–2026 <span class="mb mb-fy">2021–25 FULL YEARS</span><span class="mb mb-rr">2026 YTD</span></div><div class="c-sub">2026 bar = 673 actual (Jan–Jul 28) — not comparable to full-year bars; forecast range 1,133–1,829 shown as reference lines</div></div>
+    <div class="cw"><div class="cb-m"><canvas id="ch-hist-year"></canvas></div></div>
+  </div>
+  <div class="card">
+    <div class="c-head"><div class="c-title">Same Period Jan–Jul — 2021 to 2026 <span class="mb mb-sp">SAME PERIOD</span></div><div class="c-sub">Fairest cross-year lens for 2026 · 2025 estimated (actual thru Jun 15 + run-rate) · 2026 through Jul 28</div></div>
+    <div class="cw"><div class="cb-m"><canvas id="ch-hist-sp"></canvas></div></div>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:18px">
+  <div class="c-head"><div class="c-title">Monthly Seasonality Index — 2021–2024 average <span class="mb mb-fy">4-YEAR BASE</span></div><div class="c-sub">Index = month average ÷ overall monthly mean (64.0). 1.00 = average month. Oct & Nov are the strongest months in all four years.</div></div>
+  <div class="cw"><div class="cb-m"><canvas id="ch-hist-season"></canvas></div></div>
+</div>
+
+<div class="ey">Media Cost History — Main Meta Account <span style="opacity:.6">(total spend ÷ messages · same convention as 2025/2026 CPL)</span></div>
+<div class="g64" style="margin-bottom:18px">
+  <div class="card">
+    <div class="c-head"><div class="c-title">Cost per Message 2023–2026 <span class="mb mb-rr">2023 = JUL–DEC ONLY</span></div><div class="c-sub">Chart = main EGP account only, for a like-for-like series. Secondary accounts (IG · 2nd · USD) were active almost exclusively in 2024 — shown as separate table rows, not mixed into the trend line.</div></div>
+    <div class="cw"><div class="cb-m"><canvas id="ch-hist-cpl"></canvas></div></div>
+  </div>
+  <div class="card">
+    <div class="c-head"><div class="c-title">Spend & Messages by Period</div><div class="c-sub">From period-sliced Meta exports</div></div>
+    <div class="c-body" style="padding-top:0">
+      <table class="tbl">
+        <thead><tr><th>Period</th><th>Spend (EGP)</th><th>Messages</th><th>Cost/Msg</th></tr></thead>
+        <tbody>
+          <tr><td>H2 2023 (Jul 5–Dec 31) — main</td><td class="mo">278,488</td><td class="mo">9,182</td><td class="mo">30.3</td></tr>
+          <tr><td>2024 (full year) — main</td><td class="mo">755,985</td><td class="mo">14,109</td><td class="mo">53.6</td></tr>
+          <tr style="background:rgba(62,158,255,.03)"><td>2024 — all EGP accounts (main + IG + 2nd)</td><td class="mo">1,220,822</td><td class="mo">15,935</td><td class="mo">76.6</td></tr>
+          <tr style="background:rgba(62,158,255,.03)"><td style="font-size:10.5px;color:var(--tx3)">↳ + USD account (not converted)</td><td class="mo" style="font-size:10.5px">$441</td><td class="mo" style="font-size:10.5px">974</td><td class="mo" style="font-size:10.5px">—</td></tr>
+          <tr><td>2025 (full year) — main</td><td class="mo">2,301,189</td><td class="mo">20,096</td><td class="mo">114.5</td></tr>
+          <tr><td>2026 YTD (Jan–Jul 29) — main</td><td class="mo">1,755,011</td><td class="mo">12,409</td><td class="mo am">141.4</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="ins ia" style="margin-bottom:18px">
+  <strong>Reading the cost history:</strong> Cost per message rose 30 → 54 → 115 → 141 EGP across 2023–2026. This span includes the March 2024 EGP devaluation (~31 → ~48+ per USD), sustained inflation, and rising Meta auction prices — a substantial share of the increase is <strong>structural market cost, not campaign performance</strong>. The 2024→2025 jump also coincides with a 3× spend scale-up (756K → 2.3M EGP), and larger budgets typically buy marginal reach at higher unit cost. These figures establish the trend line; they do not isolate performance from macro effects. <strong>Account coverage note:</strong> total 2024 media investment across all EGP accounts was 1,220,822 EGP (main 755,985 + Instagram 359,909 + secondary 104,928) plus $441 on a USD account — the secondary accounts were nearly inactive in 2023, 2025, and 2026 (verified against lifetime exports), so the main-account trend line remains like-for-like across years.
+</div>
+
+<div class="ins ib">
+  <strong>Reading seasonality:</strong> October (1.46) and November (1.32) are consistently the strongest months; April (0.57) the weakest. The January index (1.19) is inflated by a single outlier month (Jan 2024 = 134); excluding it, January is near average. Aug–Dec averages index <strong>1.13</strong> — the remainder of 2026 falls in a seasonally stronger-than-average window, which supports the Q4-weighted Le Marché plan. Possible drivers (exhibition season, delivery-before-year-end demand) are consistent with the pattern but not proven from this data.
+</div>
+
+</div>
+
+<!-- ══════════════════════════════════════════
+  06 FORECAST ENGINE
+══════════════════════════════════════════ -->
+<div id="pg-forecast" class="pg">
+
+<div class="warn-bar">
+  <span class="warn-ico">◌</span>
+  <span class="warn-txt"><strong>Forecast methodology:</strong> 2026 YTD figures (Jan 1 – Jul 28) are actual, including July. Remaining months (Aug–Dec) are projected using remaining budget ÷ scenario cost per digital measurement. Full-year 2026 = YTD actual + remaining forecast + estimated non-digital run rate. Note: July actual spend (365,893 EGP) ran well above the planned 175,000 monthly H2 budget — remaining-budget assumptions may need revision. Historical seasonality (2021–2024, see Historical Trend page) shows Aug–Dec running at an average index of <strong>1.13</strong> — a stronger-than-average window. The digital forecast remains budget-driven (budget ÷ cost per digital measurement); seasonality implies the flat non-digital run-rate estimate (~197) is conservative rather than optimistic. All projected figures carry a FORECAST badge.</span>
+</div>
+
+<div class="hero">
+  <div class="hero-ey">06 — Forecast Engine</div>
+  <div class="hero-h">Four scenarios for the remainder of 2026 — measured against both 2025 benchmarks.</div>
+  <div class="hero-p">2026 YTD stands at <strong>673 total measurements</strong> (401 digital) on <strong>1.76M EGP</strong> through Jul 28. Remaining planned budget (Aug–Dec): <strong>1.15M EGP</strong>. The scenarios range from <strong>~1,133</strong> (current trend) to <strong>~1,829</strong> (best case) full-year measurements — compare either to the full-year 2025 actual of <strong>1,419</strong> or the annualized same-period 2025 pace of <strong>~1,660</strong> (761 × 12/5.5).</div>
+</div>
+
+<div class="kgrid k4" style="margin-bottom:20px">
+
+  <div class="k n">
+    <div class="k-lbl">2026 YTD Actual (Jan–Jul 28)</div>
+    <div class="k-val">673</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">Total measurements</span><span class="k-ref-v">673</span></div>
+      <div class="k-ref"><span class="k-ref-k">Digital measurements</span><span class="k-ref-v">401</span></div>
+    </div>
+    <span class="k-delta kf">Actual — not forecast</span>
+    <span class="k-meth">ACTUAL</span>
+  </div>
+
+  <div class="k b">
+    <div class="k-lbl">Remaining Budget (Aug–Dec)</div>
+    <div class="k-val">1.15M</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">Regular months (4×)</span><span class="k-ref-v">175,000 ea.</span></div>
+      <div class="k-ref"><span class="k-ref-k">September (Le Marché)</span><span class="k-ref-v">450,000</span></div>
+      <div class="k-ref"><span class="k-ref-k">July actual spend</span><span class="k-ref-v">365,893</span></div>
+    </div>
+    <span class="k-delta kf">Planned</span>
+    <span class="k-meth">PLANNED</span>
+  </div>
+
+  <div class="k n">
+    <div class="k-lbl">2025 Benchmarks</div>
+    <div class="k-val">1,419</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">Full Year actual</span><span class="k-ref-v">1,419</span></div>
+      <div class="k-ref"><span class="k-ref-k">Same-period annualized</span><span class="k-ref-v">~1,660</span></div>
+    </div>
+    <span class="k-delta kf">Two reference points</span>
+    <span class="k-meth">FULL YEAR · SAME PERIOD ANNUALIZED</span>
+  </div>
+
+  <div class="k a">
+    <div class="k-lbl">Current Cost / Digital Meas</div>
+    <div class="k-val">4,377 EGP</div>
+    <div class="k-refs">
+      <div class="k-ref"><span class="k-ref-k">2026 YTD actual rate</span><span class="k-ref-v">4,377 EGP</span></div>
+      <div class="k-ref"><span class="k-ref-k">2025 Jan-Jun15 actual rate</span><span class="k-ref-v">1,429 EGP</span></div>
+    </div>
+    <span class="k-delta kf">Key forecast variable</span>
+    <span class="k-meth">ACTUAL RATE</span>
+  </div>
+
+</div>
+
+<div class="ey">Remaining 2026 Scenarios (Aug–Dec) — Budget: 1,150,000 EGP</div>
+<div class="kgrid k4" style="margin-bottom:20px">
+
+  <div class="sc sc-con">
+    <div class="sc-lbl">Conservative <span class="mb mb-fc">FORECAST</span></div>
+    <div class="sc-h">Current trend continues</div>
+    <div class="sc-d">Cost per digital measurement stays at 4,377 EGP (current YTD rate).</div>
+    <div class="sc-r"><span class="sc-k">Aug–Dec Digital CPM</span><span class="sc-v" style="color:var(--rd)">4,377 EGP</span></div>
+    <div class="sc-r"><span class="sc-k">Aug–Dec Digital Meas</span><span class="sc-v">263</span></div>
+    <div class="sc-r"><span class="sc-k">FY Total</span><span class="sc-v rd">~1,133</span></div>
+    <div class="sc-r"><span class="sc-k">vs FY25 (1,419)</span><span class="sc-v rd">−20%</span></div>
+    <div class="sc-r"><span class="sc-k">vs SP25 annualized (~1,660)</span><span class="sc-v rd">−32%</span></div>
+  </div>
+
+  <div class="sc sc-base">
+    <div class="sc-lbl">Base Case <span class="mb mb-fc">FORECAST</span></div>
+    <div class="sc-h">Moderate improvement</div>
+    <div class="sc-d">Digital CPM improves to 2,500 EGP via better creative and targeting mix.</div>
+    <div class="sc-r"><span class="sc-k">Aug–Dec Digital CPM</span><span class="sc-v" style="color:var(--am)">2,500 EGP</span></div>
+    <div class="sc-r"><span class="sc-k">Aug–Dec Digital Meas</span><span class="sc-v">460</span></div>
+    <div class="sc-r"><span class="sc-k">FY Total</span><span class="sc-v am">~1,330</span></div>
+    <div class="sc-r"><span class="sc-k">vs FY25 (1,419)</span><span class="sc-v am">−6%</span></div>
+    <div class="sc-r"><span class="sc-k">vs SP25 annualized (~1,660)</span><span class="sc-v am">−20%</span></div>
+  </div>
+
+  <div class="sc sc-rec">
+    <div class="sc-lbl">Recovery <span class="mb mb-fc">FORECAST</span></div>
+    <div class="sc-h">Same-period 2025 level</div>
+    <div class="sc-d">Digital CPM returns to 1,429 EGP — the Jan–Jun15 2025 actual rate.</div>
+    <div class="sc-r"><span class="sc-k">Aug–Dec Digital CPM</span><span class="sc-v" style="color:var(--bl)">1,429 EGP</span></div>
+    <div class="sc-r"><span class="sc-k">Aug–Dec Digital Meas</span><span class="sc-v">803</span></div>
+    <div class="sc-r"><span class="sc-k">FY Total</span><span class="sc-v" style="color:var(--bl)">~1,673</span></div>
+    <div class="sc-r"><span class="sc-k">vs FY25 (1,419)</span><span class="sc-v" style="color:var(--bl)">+18%</span></div>
+    <div class="sc-r"><span class="sc-k">vs SP25 annualized (~1,660)</span><span class="sc-v" style="color:var(--bl)">+1%</span></div>
+  </div>
+
+  <div class="sc sc-best">
+    <div class="sc-lbl">Best Case <span class="mb mb-fc">FORECAST</span></div>
+    <div class="sc-h">Above 2025 performance</div>
+    <div class="sc-d">Digital CPM reaches 1,200 EGP; Le Marché October drives Q4 volume.</div>
+    <div class="sc-r"><span class="sc-k">Aug–Dec Digital CPM</span><span class="sc-v" style="color:var(--ac)">1,200 EGP</span></div>
+    <div class="sc-r"><span class="sc-k">Aug–Dec Digital Meas</span><span class="sc-v">959</span></div>
+    <div class="sc-r"><span class="sc-k">FY Total</span><span class="sc-v gr">~1,829</span></div>
+    <div class="sc-r"><span class="sc-k">vs FY25 (1,419)</span><span class="sc-v gr">+29%</span></div>
+    <div class="sc-r"><span class="sc-k">vs SP25 annualized (~1,660)</span><span class="sc-v gr">+10%</span></div>
+  </div>
+
+</div>
+
+<div class="g2">
+  <div class="card">
+    <div class="c-head"><div class="c-title">Full Year Projection — 4 Scenarios <span class="mb mb-fy">YTD ACTUAL</span><span class="mb mb-fc">AUG–DEC FORECAST</span></div><div class="c-sub">Both 2025 benchmark lines shown: full year (1,419) and same-period annualized (~1,660)</div></div>
+    <div class="cw"><div class="cb-l"><canvas id="ch-fc-sc"></canvas></div></div>
+  </div>
+  <div class="card">
+    <div class="c-head"><div class="c-title">Cost/Measurement Sensitivity <span class="mb mb-fc">FORECAST</span></div><div class="c-sub">Remaining (Aug–Dec) digital measurements = 1,150,000 ÷ scenario CPM</div></div>
+    <div class="cw"><div class="cb-l"><canvas id="ch-fc-sens"></canvas></div></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="c-head"><div class="c-title">Monthly Forecast Table — Jul Actual · Aug–Dec Projected <span class="mb mb-fc">MIXED</span></div><div class="c-sub">Projected digital measurements = monthly budget ÷ scenario CPM. Non-digital remainder estimated at ~197 from YTD run rate. July shows actual spend and actual digital measurements.</div></div>
+  <div class="c-body" style="padding-top:0">
+    <table class="tbl">
+      <thead><tr><th>Month</th><th>Budget</th><th>Conservative (4,377)</th><th>Base Case (2,500)</th><th>Recovery (1,429)</th><th>Best Case (1,200)</th></tr></thead>
+      <tbody>
+        <tr style="background:rgba(62,158,255,.04)"><td>July <span class="mb mb-fy" style="font-size:7px">ACTUAL</span></td><td class="mo" style="color:var(--am)">365,893</td><td class="mo">72</td><td class="mo">72</td><td class="mo">72</td><td class="mo">72</td></tr>
+        <tr><td>August</td><td class="mo">175,000</td><td class="mo">40</td><td class="mo">70</td><td class="mo">122</td><td class="mo">146</td></tr>
+        <tr style="background:rgba(23,179,107,.03)"><td>September <span class="mb mb-fc" style="font-size:7px">Le Marche</span></td><td class="mo gr">450,000</td><td class="mo am">103</td><td class="mo">180</td><td class="mo gr">315</td><td class="mo gr">375</td></tr>
+        <tr><td>October</td><td class="mo">175,000</td><td class="mo">40</td><td class="mo">70</td><td class="mo">122</td><td class="mo">146</td></tr>
+        <tr><td>November</td><td class="mo">175,000</td><td class="mo">40</td><td class="mo">70</td><td class="mo">122</td><td class="mo">146</td></tr>
+        <tr><td>December</td><td class="mo">175,000</td><td class="mo">40</td><td class="mo">70</td><td class="mo">122</td><td class="mo">146</td></tr>
+        <tr style="font-weight:600"><td>Aug–Dec Digital (forecast)</td><td class="mo">1,150,000</td><td class="mo rd">263</td><td class="mo am">460</td><td class="mo" style="color:var(--bl)">803</td><td class="mo gr">959</td></tr>
+        <tr style="background:rgba(23,179,107,.02)"><td>+ Remaining Non-Digital (est.)</td><td class="mo">—</td><td class="mo">~197</td><td class="mo">~197</td><td class="mo">~197</td><td class="mo">~197</td></tr>
+        <tr style="font-weight:700;border-top:2px solid var(--e)"><td>Full Year Total (YTD + remainder)</td><td class="mo">—</td><td class="mo rd">~1,133</td><td class="mo am">~1,330</td><td class="mo" style="color:var(--bl)">~1,673</td><td class="mo gr">~1,829</td></tr>
+        <tr><td style="font-size:10.5px;color:var(--tx3)">vs FY25 (1,419) / SP25-ann. (~1,660)</td><td></td><td class="mo rd" style="font-size:10px">−20% / −32%</td><td class="mo am" style="font-size:10px">−6% / −20%</td><td class="mo" style="font-size:10px;color:var(--bl)">+18% / +1%</td><td class="mo gr" style="font-size:10px">+29% / +10%</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</div>
+
+<!-- ══════════════════════════════════════════
+  07 RECOMMENDATIONS
+══════════════════════════════════════════ -->
+<div id="pg-recs" class="pg">
+
+<div class="hero">
+  <div class="hero-ey">07 — Strategic Recommendations</div>
+  <div class="hero-h">One pattern. Three tracks. Action items grounded in same-period data.</div>
+  <div class="hero-p">Every recommendation below ties back to a measured change confirmed across full-year, same-period, and run-rate views — not a single comparison method in isolation.</div>
+</div>
+
+<div class="ey">Track 1 — Creative Quality (30 Days)</div>
+
+<div class="rec">
+  <div class="rec-h"><span class="rec-ico">🪝</span><div><div class="rec-cat">Creative · Critical</div><div class="rec-t">Rebuild the first two seconds of every video around a hook</div></div></div>
+  <div class="rec-b">IG Reels reach 60,059 people with 26,197 average views (43%) — confirmed as a per-post average, independent of period. Test five hook variations and measure 3-to-15 second retention.</div>
+  <div class="rec-tags"><span class="rt rt-r">Critical</span><span class="rt rt-r">This week</span></div>
+</div>
+
+<div class="rec">
+  <div class="rec-h"><span class="rec-ico">📅</span><div><div class="rec-cat">Creative · Volume</div><div class="rec-t">Commit to 4 Reels/week — volume is down by every measure</div></div></div>
+  <div class="rec-b">Reel publishing is at 3.3/month (2026, through Jun 15) vs 4.8-4.9/month in 2025 — a consistent ~32% difference regardless of comparison method, and a clear opportunity to expand.</div>
+  <div class="rec-tags"><span class="rt rt-r">Critical</span><span class="rt rt-r">This week</span></div>
+</div>
+
+<div class="div"></div>
+<div class="ey">Track 2 — Media Efficiency (Q3)</div>
+
+<div class="rec">
+  <div class="rec-h"><span class="rec-ico">📈</span><div><div class="rec-cat">Media · Monitoring</div><div class="rec-t">Weekly cost-per-digital-measurement monitoring with structured creative testing</div></div></div>
+  <div class="rec-b">Cost per digital measurement rose +126% (vs full year) to +188% (vs same-period estimate) — consistent across both lenses. Track the KPI weekly per campaign and run structured creative A/B tests; optimization decisions should wait for statistically sufficient data rather than early signals.</div>
+  <div class="rec-tags"><span class="rt rt-a">High</span><span class="rt rt-b">Ongoing</span></div>
+</div>
+
+<div class="rec">
+  <div class="rec-h"><span class="rec-ico">🗓</span><div><div class="rec-cat">Media · September</div><div class="rec-t">Le Marché September push — creative and audiences ready by mid-August</div></div></div>
+  <div class="rec-b">September carries 450K EGP — the single largest H2 month. Forecast range for September alone spans 103 to 375 digital measurements depending on execution quality.</div>
+  <div class="rec-tags"><span class="rt rt-r">Critical</span><span class="rt rt-r">Mid-Aug deadline</span></div>
+</div>
+
+<div class="div"></div>
+<div class="ey">Track 3 — Pipeline & Operations</div>
+
+<div class="rec">
+  <div class="rec-h"><span class="rec-ico">📊</span><div><div class="rec-cat">Operations · Data</div><div class="rec-t">Mandatory source tracking at every measurement intake</div></div></div>
+  <div class="rec-b">1.76M EGP cannot be accurately attributed without consistent source data across all three comparison lenses used in this dashboard.</div>
+  <div class="rec-tags"><span class="rt rt-a">High</span><span class="rt rt-r">This week</span></div>
+</div>
+
+<div class="rec">
+  <div class="rec-h"><span class="rec-ico">🔁</span><div><div class="rec-cat">Operations · Pipeline</div><div class="rec-t">Structured post-measurement follow-up protocol</div></div></div>
+  <div class="rec-b">Repeat customer measurements rose sharply on every measure — full year, same period, and run rate. This signals an opportunity to systematize what is already working organically.</div>
+  <div class="rec-tags"><span class="rt rt-a">High</span><span class="rt rt-r">This week</span></div>
+</div>
+
+<div class="rec">
+  <div class="rec-h"><span class="rec-ico">⏱</span><div><div class="rec-cat">Operations · Response time</div><div class="rec-t">Lead Response SLA — defined maximum time from message to first reply</div></div></div>
+  <div class="rec-b">Message volume runs +7% above the 2025 monthly pace while message-to-measurement conversion moved −1.64pp. Possible contributing factors include lead qualification, response time, follow-up consistency, and the inspection-fee policy — none can be isolated from current data. A measured response-time SLA with CRM tracking makes this stage diagnosable.</div>
+  <div class="rec-tags"><span class="rt rt-a">High</span><span class="rt rt-b">Q3</span></div>
+</div>
+
+<div class="rec">
+  <div class="rec-h"><span class="rec-ico">🎓</span><div><div class="rec-cat">Operations · Sales enablement</div><div class="rec-t">Sales script optimization, team training, and weekly QA on message handling</div></div></div>
+  <div class="rec-b">The message-to-measurement stage is where the funnel narrows most vs 2025. Marketing generates conversations at or above pace; converting them to showroom visits depends on operational execution. A training cycle plus weekly conversation QA addresses the operational half of the funnel that ad optimization cannot reach.</div>
+  <div class="rec-tags"><span class="rt rt-a">High</span><span class="rt rt-b">Q3</span></div>
+</div>
+
+</div>
+
+  </div><!-- /flex -->
+
+  <footer>
+    <div class="ft-l">Prepared by Ahmed Nour</div>
+    <div class="ft-r">Digital Marketing | Growth & Performance<br>Kitchino Intelligence Platform · Jan 2025 – Jul 29, 2026</div>
+  </footer>
+</main>
+</div>
+
+<script>
+var TITLES={exec:'Executive Summary',funnel:'Funnel Intelligence',content:'Content Intelligence',media:'Media Intelligence',pipeline:'Pipeline Intelligence',history:'Historical Trend',forecast:'Forecast Engine',recs:'Strategic Recommendations'};
+var QS={exec:'What happened?',funnel:'Where is the leak?',content:'Why is attention declining?',media:'Where is efficiency lost?',pipeline:'How healthy is the pipeline?',history:'How did we get here?',forecast:'What happens next?',recs:'What should we do?'};
+function nav(id,btn){
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on')});
+  document.querySelectorAll('.sb-btn').forEach(function(b){b.classList.remove('on')});
+  document.getElementById('pg-'+id).classList.add('on');
+  btn.classList.add('on');
+  document.getElementById('tb-h').textContent=TITLES[id]||id;
+  document.getElementById('tb-q').textContent=QS[id]||'';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+var GC='rgba(255,255,255,.05)';
+Chart.defaults.font.family="'IBM Plex Mono',monospace";
+Chart.defaults.font.size=10;
+Chart.defaults.color='#5e8a6e';
+Chart.defaults.plugins.legend.labels.usePointStyle=true;
+Chart.defaults.plugins.legend.labels.padding=14;
+function bar(l,d,c){return{label:l,data:d,backgroundColor:c,borderRadius:4,borderSkipped:false}}
+function line(l,d,c,f){return{label:l,data:d,borderColor:c,backgroundColor:f||'transparent',fill:!!f,tension:.4,borderWidth:2,pointRadius:3,pointBackgroundColor:c}}
+var M6=['Jan','Feb','Mar','Apr','May','Jun'];var M7=['Jan','Feb','Mar','Apr','May','Jun','Jul'];
+
+new Chart(document.getElementById('ch-exec-meas'),{type:'bar',data:{labels:M7,datasets:[bar('2025 (Jan-Jun15 shown, of FY 1,419)',[124,100,69,224,189,55,null],'rgba(23,179,107,.6)'),bar('2026 (total 673 through Jul 28)',[79,72,68,98,92,144,120],'rgba(229,72,77,.6)')]},options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{label:function(c){return' '+c.dataset.label+': '+c.parsed.y+' meas.'}}}},scales:{y:{grid:{color:GC}},x:{grid:{display:false}}}}});
+
+new Chart(document.getElementById('ch-exec-3way'),{type:'bar',data:{labels:['Spend/mo (K EGP)','Messages/mo','Meas/mo'],datasets:[bar('FY25 monthly avg',[191.8,1675,118.2],'rgba(23,179,107,.5)'),bar('SP25 est monthly avg (msgs n/a)',[170.8,null,134.3],'rgba(62,158,255,.5)'),bar('2026 monthly avg',[254.3,1798,97.5],'rgba(229,72,77,.6)')]},options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{label:function(c){return' '+c.dataset.label+': '+c.parsed.y.toLocaleString()}}}},scales:{y:{type:'logarithmic',grid:{color:GC}},x:{ticks:{font:{size:8.5}},grid:{display:false}}}}});
+
+new Chart(document.getElementById('ch-cont-vol'),{type:'bar',data:{labels:['FB Videos','FB Photos','IG Reels','IG Carousel'],datasets:[bar('FY25 (12mo)',[5.5,3.8,4.8,2.7],'rgba(23,179,107,.5)'),bar('SP25 (est.)',[5.5,3.8,4.9,2.7],'rgba(62,158,255,.5)'),bar('2026 (5.5mo)',[3.6,4.2,3.3,2.9],'rgba(229,72,77,.6)')]},options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{label:function(c){return' '+c.dataset.label+': '+c.parsed.y+'/mo'}}}},scales:{y:{grid:{color:GC}},x:{ticks:{font:{size:9}},grid:{display:false}}}}});
+
+new Chart(document.getElementById('ch-cont-org'),{type:'bar',data:{labels:['FB Organic','IG Organic'],datasets:[bar('FY25 total',[1860,549],'rgba(23,179,107,.5)'),bar('SP25 total (est.)',[852,252],'rgba(62,158,255,.5)'),bar('2026 total',[388,290],'rgba(229,72,77,.6)')]},options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{label:function(c){return' '+c.dataset.label+': '+c.parsed.y}}}},scales:{y:{grid:{color:GC}},x:{grid:{display:false}}}}});
+
+new Chart(document.getElementById('ch-med-cpl'),{type:'line',data:{labels:M6,datasets:[line('CPL 2026 (EGP)',[123,145,155,143,158,235],'#e8a020'),{label:'FY25 rate — prior basis (101 EGP)',data:[101,101,101,101,101,101],borderColor:'rgba(23,179,107,.4)',borderWidth:1.5,borderDash:[4,4],pointRadius:0,tension:0},{label:'SP25 rate — prior basis (79 EGP)',data:[79,79,79,79,79,79],borderColor:'rgba(62,158,255,.4)',borderWidth:1.5,borderDash:[2,2],pointRadius:0,tension:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{label:function(c){return' '+c.dataset.label+': '+c.parsed.y+' EGP'}}}},scales:{y:{grid:{color:GC},ticks:{callback:function(v){return v+' EGP'}}},x:{grid:{display:false}}}}});
+
+new Chart(document.getElementById('ch-med-div'),{type:'line',data:{labels:M6,datasets:[line('Monthly Spend (EGP)',[195000,210000,220000,240000,250000,232000],'#e8a020'),{label:'Monthly Messages',data:[1580,1450,1420,1680,1580,986],borderColor:'#e5484d',borderWidth:2,tension:.4,pointRadius:3,pointBackgroundColor:'#e5484d',yAxisID:'y2'}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{grid:{color:GC},position:'left',ticks:{callback:function(v){return(v/1000).toFixed(0)+'K EGP'}}},y2:{grid:{display:false},position:'right',ticks:{callback:function(v){return v+' msgs'}}}}}});
+
+new Chart(document.getElementById('ch-pipe-fy25'),{type:'doughnut',data:{labels:['Walk-in (596)','Call Center (306)','Le Marche (159)','WhatsApp (61)','Instagram (30)','Facebook (22)','Webmail+Google (14)'],datasets:[{data:[596,306,159,61,30,22,14],backgroundColor:['#17b36b','#0e8c52','#a78bfa','#3e9eff','#5e8a6e','#2a4236','#1a2e22'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'right',labels:{font:{size:8.5}}}}}});
+
+new Chart(document.getElementById('ch-pipe-26'),{type:'doughnut',data:{labels:['Walk-in (213)','Call Center (91)','Le Marche (67)','Facebook (11)','Webmail (10)','Instagram (4)','WA+Google (5)'],datasets:[{data:[213,91,67,11,10,4,5],backgroundColor:['#e5484d','#c43838','#a78bfa','#2a4236','#5e8a6e','#3e9eff','#1a2e22'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'right',labels:{font:{size:8.5}}}}}});
+
+new Chart(document.getElementById('ch-pipe-monthly'),{type:'bar',data:{labels:M7,datasets:[bar('2025 Jan-Jun15 shown (of FY total 1,419)',[124,100,69,224,189,55,null],'rgba(23,179,107,.55)'),bar('2026 Jan-Jul28 (total 673)',[79,72,68,98,92,144,120],'rgba(229,72,77,.6)')]},options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{label:function(c){return' '+c.dataset.label+': '+c.parsed.y}}}},scales:{y:{grid:{color:GC}},x:{grid:{display:false}}}}});
+
+new Chart(document.getElementById('ch-hist-year'),{type:'bar',data:{labels:['2021','2022','2023','2024','2025','2026 YTD'],datasets:[{label:'Total Measurements',data:[655,698,848,871,1419,673],backgroundColor:['rgba(23,179,107,.35)','rgba(23,179,107,.45)','rgba(23,179,107,.55)','rgba(23,179,107,.65)','rgba(23,179,107,.8)','rgba(232,160,32,.65)'],borderRadius:4,borderSkipped:false},{label:'FC26 low (1,133)',data:[null,null,null,null,null,1133],type:'line',borderColor:'rgba(229,72,77,.5)',borderWidth:1.5,borderDash:[4,4],pointRadius:4,pointStyle:'line',pointBorderColor:'rgba(229,72,77,.8)'},{label:'FC26 high (1,829)',data:[null,null,null,null,null,1829],type:'line',borderColor:'rgba(23,179,107,.5)',borderWidth:1.5,borderDash:[4,4],pointRadius:4,pointStyle:'line',pointBorderColor:'rgba(23,179,107,.8)'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{label:function(c){return' '+c.dataset.label+': '+(c.parsed.y||0)}}}},scales:{y:{grid:{color:GC}},x:{grid:{display:false}}}}});
+
+new Chart(document.getElementById('ch-hist-sp'),{type:'bar',data:{labels:['2021','2022','2023','2024','2025 est.','2026'],datasets:[{label:'Jan–Jul Measurements',data:[333,354,452,484,927,673],backgroundColor:['rgba(62,158,255,.35)','rgba(62,158,255,.45)','rgba(62,158,255,.55)','rgba(62,158,255,.65)','rgba(62,158,255,.8)','rgba(229,72,77,.65)'],borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return' Jan–Jul: '+c.parsed.y+' meas.'}}}},scales:{y:{grid:{color:GC}},x:{grid:{display:false}}}}});
+
+new Chart(document.getElementById('ch-hist-season'),{type:'bar',data:{labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],datasets:[{label:'Seasonality Index (2021–24 avg ÷ 64.0)',data:[1.19,0.85,0.95,0.57,0.91,0.96,0.91,0.92,1.02,1.46,1.32,0.95],backgroundColor:[1.19,0.85,0.95,0.57,0.91,0.96,0.91,0.92,1.02,1.46,1.32,0.95].map(function(v){return v>=1.2?'rgba(23,179,107,.75)':v>=1?'rgba(23,179,107,.45)':v>=0.8?'rgba(232,160,32,.45)':'rgba(229,72,77,.55)'}),borderRadius:4,borderSkipped:false},{label:'Average (1.00)',data:[1,1,1,1,1,1,1,1,1,1,1,1],type:'line',borderColor:'rgba(255,255,255,.25)',borderWidth:1.5,borderDash:[4,4],pointRadius:0,tension:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{label:function(c){return' Index: '+c.parsed.y}}}},scales:{y:{grid:{color:GC},min:0},x:{grid:{display:false}}}}});
+
+new Chart(document.getElementById('ch-hist-cpl'),{type:'bar',data:{labels:['H2 2023','2024','2025','2026 YTD'],datasets:[{label:'Cost per Message (EGP)',data:[30.3,53.6,114.5,141.4],backgroundColor:['rgba(23,179,107,.5)','rgba(62,158,255,.55)','rgba(232,160,32,.6)','rgba(229,72,77,.65)'],borderRadius:4,borderSkipped:false,yAxisID:'y'},{label:'Messages (000s)',data:[9.2,14.1,20.1,12.4],type:'line',borderColor:'rgba(255,255,255,.45)',borderWidth:2,pointRadius:3,pointBackgroundColor:'rgba(255,255,255,.6)',tension:.3,yAxisID:'y2'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{label:function(c){return' '+c.dataset.label+': '+c.parsed.y}}}},scales:{y:{grid:{color:GC},ticks:{callback:function(v){return v+' EGP'}}},y2:{position:'right',grid:{display:false},ticks:{callback:function(v){return v+'K'}}},x:{grid:{display:false}}}}});
+
+new Chart(document.getElementById('ch-fc-sc'),{type:'bar',data:{labels:['Conservative','Base Case','Recovery','Best Case'],datasets:[{label:'YTD Actual (673)',data:[673,673,673,673],backgroundColor:'rgba(107,143,116,.6)',borderRadius:[0,0,0,0],borderSkipped:false},{label:'Aug-Dec Forecast',data:[263,460,803,959],backgroundColor:['rgba(229,72,77,.7)','rgba(232,160,32,.7)','rgba(62,158,255,.7)','rgba(23,179,107,.75)'],borderRadius:[0,0,0,0],borderSkipped:false},{label:'Remaining Non-Digital (est.)',data:[197,197,197,197],backgroundColor:'rgba(167,139,250,.4)',borderRadius:[4,4,4,4],borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{label:function(c){return' '+c.dataset.label+': '+(c.parsed.y||0)}}},annotation:{}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:GC},suggestedMax:1900}}}});
+
+new Chart(document.getElementById('ch-fc-sens'),{type:'bar',data:{labels:['1,200 EGP','1,429 (H1-25)','2,500 EGP','4,377 (now)','6,000 EGP'],datasets:[{label:'Aug-Dec Digital Measurements',data:[959,803,460,263,192],backgroundColor:['rgba(23,179,107,.8)','rgba(62,158,255,.7)','rgba(232,160,32,.7)','rgba(229,72,77,.7)','rgba(229,72,77,.4)'],borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return' '+c.parsed.y+' digital meas. (Aug-Dec)'}}}},scales:{y:{grid:{color:GC}},x:{ticks:{font:{size:9}},grid:{display:false}}}}});
+</script>
+</body>
+</html>
