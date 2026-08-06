@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kitchino Intelligence Platform</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300;1,9..144,400&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 :root{
@@ -178,6 +178,11 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .rt{font-family:var(--m);font-size:9.5px;padding:2px 7px;border-radius:3px}
 .rt-r{background:rgba(229,72,77,.1);color:var(--rd)}.rt-a{background:rgba(232,160,32,.1);color:var(--am)}.rt-g{background:rgba(23,179,107,.1);color:#0c7a46}.rt-b{background:rgba(62,158,255,.1);color:var(--bl)}
 
+.rtlp{direction:rtl;text-align:right;font-family:'IBM Plex Sans Arabic',var(--f)}
+.rtlp .tbl th,.rtlp .tbl td{text-align:right}
+.rtlp .hero-h{font-style:normal;font-family:'IBM Plex Sans Arabic',var(--f)}
+.hook2{background:var(--ac3);border-right:3px solid var(--ac);border-radius:8px 0 0 8px;padding:8px 12px;margin:7px 0;font-size:12px;color:var(--tx2)}
+.hook2 b{color:var(--tx)}
 footer{border-top:1px solid var(--e);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;max-width:1320px}
 .ft-l{font-family:var(--s);font-style:italic;font-size:13px;color:var(--tx2)}
 .ft-r{font-family:var(--m);font-size:9.5px;color:var(--tx3);text-align:right;line-height:1.7}
@@ -212,6 +217,7 @@ footer{border-top:1px solid var(--e);padding:16px 24px;display:flex;justify-cont
       <div class="sb-lbl">Strategy</div>
       <button class="sb-btn" onclick="nav('forecast',this,'Forecast Engine','What happens next?')"><span class="sb-ico">◌</span><span>Forecast Engine</span><span class="sb-num">06</span></button>
       <button class="sb-btn" onclick="nav('recs',this,'Strategic Recommendations','What should we do?')"><span class="sb-ico">◆</span><span>Recommendations</span><span class="sb-num">07</span></button>
+      <button class="sb-btn" onclick="nav('plan',this,'Content Plan','ما الذي ننشره؟')"><span class="sb-ico">✎</span><span>Content Plan</span><span class="sb-num">09</span></button>
     </div>
   </nav>
   <div class="sb-foot">
@@ -1256,6 +1262,124 @@ footer{border-top:1px solid var(--e);padding:16px 24px;display:flex;justify-cont
 
 </div>
 
+<!-- ══════════════════════════════════════════
+  09 CONTENT PLAN (Aug–Sep 2026)
+══════════════════════════════════════════ -->
+<div id="pg-plan" class="pg rtlp">
+
+<div class="hero">
+  <div class="hero-ey">09 — Content Plan · أغسطس / سبتمبر 2026</div>
+  <div class="hero-h">أغسطس تأسيس. سبتمبر إحماء Le Marché.</div>
+  <div class="hero-p">الإيقاع: <strong>4 ريلز + 2 كاروسيل أسبوعيًا</strong> — صفر FB Stories. النشر الحالي 3.3 ريل/شهر مقابل ~4.9 في 2025، والهوك في أول ثانيتين هو نقطة الضعف (retention 3س→15س: 20% مقابل 41%). الفورمات المثبتة من بيانات 2025: Transformation · Detail Reveal · Project Tour · Carousel (89 ألف reach). أهداف الجدول أدناه <strong>فرضيات اختبار وليست وعودًا</strong>.</div>
+</div>
+
+<div class="ey">أغسطس — مرحلة التأسيس · الدورة الأسبوعية (10–31 أغسطس)</div>
+<div class="g2">
+  <div class="card">
+    <div class="c-head"><div class="c-title">الدورة الأسبوعية الثابتة <span class="mb mb-fy">FOUNDATION</span></div><div class="c-sub">كل أسبوع بمشروع مختلف · أسبوع 1–2 اختبار A/B للهوكات · أسبوع 3 تثبيت الفايز</div></div>
+    <div class="c-body" style="padding-top:0">
+      <table class="tbl">
+        <thead><tr><th>اليوم</th><th>القطعة</th><th>البريف</th></tr></thead>
+        <tbody>
+          <tr><td>الأحد</td><td>ريل Transformation (قبل/بعد)</td><td class="mo">B1</td></tr>
+          <tr><td>الاتنين</td><td>كاروسيل مشروع (8–10 صور)</td><td class="mo">B5</td></tr>
+          <tr><td>التلات</td><td>ريل Detail Reveal (15 ثانية)</td><td class="mo">B2</td></tr>
+          <tr><td>الأربع</td><td>ريل Project Tour (30–45 ثانية)</td><td class="mo">B3</td></tr>
+          <tr><td>الخميس</td><td>كاروسيل خامات وأفكار</td><td class="mo">B6</td></tr>
+          <tr><td>الجمعة</td><td>ريل سؤال العميل (FAQ → دايركت)</td><td class="mo">B4</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card">
+    <div class="c-head"><div class="c-title">الأسبوع التحضيري (6–9 أغسطس) <span class="mb mb-rr">مهام</span></div><div class="c-sub">قبل بدء الدورة</div></div>
+    <div class="c-body" style="padding-top:0;font-size:12.5px;color:var(--tx2);line-height:1.9">
+      اختيار <strong style="color:var(--tx)">3 مشاريع متسلّمة حديثًا</strong> للتصوير (يفضّل التجمع/أكتوبر — 75% من المقايسات منهم) ·
+      <strong style="color:var(--tx)">بدء تصوير أصول Le Marché</strong> — لازم تكون جاهزة قبل 1 سبتمبر ·
+      تجهيز قايمة أكتر 5 أسئلة متكررة في الدايركت (مادة بريف B4).
+    </div>
+  </div>
+</div>
+
+<div class="ey">سبتمبر — مرحلة الإحماء · تصعيد Le Marché</div>
+<div class="card" style="margin-bottom:18px">
+  <div class="c-head"><div class="c-title">توزيع الأسابيع <span class="mb mb-fc">WARMUP</span></div><div class="c-sub">بالتوازي مع حملات الإحماء المدفوعة (ميزانية سبتمبر 450 ألف) · نفس دورة نوفمبر/ديسمبر 2025 الناجحة</div></div>
+  <div class="c-body" style="padding-top:0">
+    <table class="tbl">
+      <thead><tr><th>الأسبوع</th><th>Evergreen</th><th>Le Marché</th></tr></thead>
+      <tbody>
+        <tr><td class="mo">1–7</td><td>B1 + B2 + B3 + B5</td><td>أول تيزر (B7) + كاروسيل ذكريات 2025 (B8)</td></tr>
+        <tr><td class="mo">8–14</td><td>B1 + B2 + B4 + B6</td><td>تيزر 2: كواليس التحضير + B8</td></tr>
+        <tr><td class="mo">15–21</td><td>B1 + B3 + B5</td><td>تيزر 3: التاريخ يظهر + كاروسيل Early Bird</td></tr>
+        <tr><td class="mo">22–30</td><td>B1 + B2</td><td>بدء العد التنازلي (B9) + تيزر أخير</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="ey">البريفات — الهوك أولًا</div>
+<div class="g2">
+  <div class="card"><div class="c-head"><div class="c-title">B1 — Transformation <span class="mb mb-fy">أعلى RETENTION</span></div></div>
+    <div class="c-body" style="padding-top:0">
+      <div class="hook2"><b>هوك أ:</b> «المطبخ ده كان عمره 15 سنة…» — لقطة القديم، قطع بعد ثانيتين</div>
+      <div class="hook2"><b>هوك ب:</b> سبليت سكرين قبل/بعد من أول فريم — «نفس المطبخ. صدقني.»</div>
+      <div style="font-size:11.5px;color:var(--tx2)">0–2س هوك → 2–5س لمحة نتيجة → 5–15س مراحل → 15–25س كشف → CTA دايركت<br><span style="color:var(--bl)">📊 القياس: retention 3س→15س (فرضية: &gt;30%) + رسائل</span></div>
+    </div>
+  </div>
+  <div class="card"><div class="c-head"><div class="c-title">B2 — Detail Reveal <span class="mb mb-sp">SAVES</span></div></div>
+    <div class="c-body" style="padding-top:0">
+      <div class="hook2"><b>هوك أ:</b> كلوز أب درج سوفت-كلوز — «التفصيلة دي بتفرق أكتر ما تتخيل»</div>
+      <div class="hook2"><b>هوك ب:</b> «ليه المطبخ الغالي بيبان غالي؟» — زوم على التشطيب</div>
+      <div style="font-size:11.5px;color:var(--tx2)">تفصيلة واحدة لكل ريل · 15 ثانية · «احفظ البوست لما تيجي تعمل مطبخك»<br><span style="color:var(--bl)">📊 القياس: Saves + إعادة المشاهدة</span></div>
+    </div>
+  </div>
+  <div class="card"><div class="c-head"><div class="c-title">B3 — Project Tour <span class="mb mb-fy">رسائل DM</span></div></div>
+    <div class="c-body" style="padding-top:0">
+      <div class="hook2"><b>هوك أ:</b> «جولة في مطبخ اتسلم الأسبوع ده في التجمع» — لقطة دخول</div>
+      <div class="hook2"><b>هوك ب:</b> «مطبخ 6 متر طلع منه كل ده» — واسعة ثم تفاصيل</div>
+      <div style="font-size:11.5px;color:var(--tx2)">مسار مشي واحد متصل · الهوك قبل الثانية الخامسة إلزامي · حد أقصى 45 ثانية<br><span style="color:var(--bl)">📊 القياس: رسائل الدايركت + مدة المشاهدة</span></div>
+    </div>
+  </div>
+  <div class="card"><div class="c-head"><div class="c-title">B4 — سؤال العميل <span class="mb mb-rr">تحويل لمحادثة</span></div></div>
+    <div class="c-body" style="padding-top:0">
+      <div class="hook2"><b>هوك:</b> «أكتر سؤال بيجي لنا في الدايركت:…» — السؤال كتابة كبيرة على الشاشة</div>
+      <div style="font-size:11.5px;color:var(--tx2)">سؤال حقيقي متكرر → إجابة صريحة → «عندك سؤال تاني؟» · دعم مباشر للرسائل الأورجانيك (حاليًا ~70/شهر مقابل 155 في 2025)<br><span style="color:var(--bl)">📊 القياس: رسائل خلال 48 ساعة + تعليقات بأسئلة جديدة</span></div>
+    </div>
+  </div>
+  <div class="card"><div class="c-head"><div class="c-title">B5 + B6 — الكاروسيلات <span class="mb mb-sp">REACH 89K</span></div></div>
+    <div class="c-body" style="padding-top:0">
+      <div style="font-size:11.5px;color:var(--tx2);line-height:1.9"><b style="color:var(--tx)">B5 مشروع:</b> أقوى لقطة «بعد» أولًا → تفاصيل → «قبل» مفاجأة في النص → ختام واسع.<br><b style="color:var(--tx)">B6 خامات:</b> مقارنات صريحة (سطح × سطح، 3 ألوان 2026، تخزين) — بيتبعت للعائلات اللي بتخطط.<br><span style="color:var(--bl)">📊 القياس: Reach (بنشمارك 89 ألف) + Saves + Shares</span></div>
+    </div>
+  </div>
+  <div class="card"><div class="c-head"><div class="c-title">B7–B9 — Le Marché <span class="mb mb-fc">سبتمبر</span></div></div>
+    <div class="c-body" style="padding-top:0">
+      <div class="hook2"><b>هوك التيزر:</b> لقطات زحام 2025 — «اللي كان هنا السنة اللي فاتت عارف…» (أعلى هوك مسجل: 21.1%)</div>
+      <div style="font-size:11.5px;color:var(--tx2)">التصعيد: أجواء → كواليس → التاريخ يظهر → عد تنازلي بتصميم موحد ومعلومة جديدة كل مرة · B8: كاروسيل ذكريات ثم Early Bird<br><span style="color:var(--bl)">📊 القياس: Reach + Shares + نمو المتابعين — ده جمهور الـ retargeting في أكتوبر</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:18px">
+  <div class="c-head"><div class="c-title">مؤشرات نجاح الشهرين — فرضيات اختبار</div></div>
+  <div class="c-body" style="padding-top:0">
+    <table class="tbl">
+      <thead><tr><th>المؤشر</th><th>الوضع الحالي</th><th>فرضية الاختبار</th></tr></thead>
+      <tbody>
+        <tr><td>ريلز منشورة شهريًا</td><td class="mo">3.3</td><td class="mo gr">14–16</td></tr>
+        <tr><td>Retention 3س→15س (FB)</td><td class="mo">20%</td><td class="mo gr">&gt;30%</td></tr>
+        <tr><td>نسبة المشاهدة من الـ Reach (IG)</td><td class="mo">43%</td><td class="mo gr">&gt;55%</td></tr>
+        <tr><td>رسائل أورجانيك شهرية (FB)</td><td class="mo">~70</td><td class="mo gr">اتجاه صاعد شهريًا</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="ins ib">
+  <strong>مراجعة كل أسبوعين:</strong> قارن نسختي الهوك لكل بريف، ثبّت الفايز، استبعد الخاسر. القيم أعلاه فرضيات قياس مبنية على بنشماركات 2025 — وليست التزامات أداء.
+</div>
+
+</div>
+
   </div><!-- /flex -->
 
   <footer>
@@ -1266,8 +1390,8 @@ footer{border-top:1px solid var(--e);padding:16px 24px;display:flex;justify-cont
 </div>
 
 <script>
-var TITLES={exec:'Executive Summary',funnel:'Funnel Intelligence',content:'Content Intelligence',media:'Media Intelligence',pipeline:'Pipeline Intelligence',history:'Historical Trend',forecast:'Forecast Engine',recs:'Strategic Recommendations'};
-var QS={exec:'What happened?',funnel:'Where is the leak?',content:'Why is attention declining?',media:'Where is efficiency lost?',pipeline:'How healthy is the pipeline?',history:'How did we get here?',forecast:'What happens next?',recs:'What should we do?'};
+var TITLES={exec:'Executive Summary',funnel:'Funnel Intelligence',content:'Content Intelligence',media:'Media Intelligence',pipeline:'Pipeline Intelligence',history:'Historical Trend',forecast:'Forecast Engine',recs:'Strategic Recommendations',plan:'Content Plan'};
+var QS={exec:'What happened?',funnel:'Where is the leak?',content:'Why is attention declining?',media:'Where is efficiency lost?',pipeline:'How healthy is the pipeline?',history:'How did we get here?',forecast:'What happens next?',recs:'What should we do?',plan:'ما الذي ننشره؟'};
 function nav(id,btn){
   document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on')});
   document.querySelectorAll('.sb-btn').forEach(function(b){b.classList.remove('on')});
